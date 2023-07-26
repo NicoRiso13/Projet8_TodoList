@@ -1446,12 +1446,12 @@ if (typeof jQuery === 'undefined') {
 
       if (this.options.animation) $tip.addClass('fade')
 
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
+      let placement = typeof this.options.placement == 'function' ?
+          this.options.placement.call(this, $tip[0], this.$element[0]) :
+          this.options.placement;
 
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
+      const autoToken = /\s?auto?\s?/i;
+      const autoPlace = autoToken.test(placement);
       if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
 
       $tip
@@ -1463,18 +1463,18 @@ if (typeof jQuery === 'undefined') {
       this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
       this.$element.trigger('inserted.bs.' + this.type)
 
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
+      const pos = this.getPosition();
+      const actualWidth = $tip[0].offsetWidth;
+      const actualHeight = $tip[0].offsetHeight;
 
       if (autoPlace) {
-        var orgPlacement = placement
-        var viewportDim = this.getPosition(this.$viewport)
+        const orgPlacement = placement;
+        const viewportDim = this.getPosition(this.$viewport);
 
-        placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top'    :
-                    placement == 'top'    && pos.top    - actualHeight < viewportDim.top    ? 'bottom' :
-                    placement == 'right'  && pos.right  + actualWidth  > viewportDim.width  ? 'left'   :
-                    placement == 'left'   && pos.left   - actualWidth  < viewportDim.left   ? 'right'  :
+        placement = placement === 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top'    :
+                    placement === 'top'    && pos.top    - actualHeight < viewportDim.top    ? 'bottom' :
+                    placement === 'right'  && pos.right  + actualWidth  > viewportDim.width  ? 'left'   :
+                    placement === 'left'   && pos.left   - actualWidth  < viewportDim.left   ? 'right'  :
                     placement
 
         $tip
@@ -1482,17 +1482,17 @@ if (typeof jQuery === 'undefined') {
           .addClass(placement)
       }
 
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+      const calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight);
 
       this.applyPlacement(calculatedOffset, placement)
 
-      var complete = function () {
-        var prevHoverState = that.hoverState
+      const complete = function () {
+        const prevHoverState = that.hoverState;
         that.$element.trigger('shown.bs.' + that.type)
         that.hoverState = null
 
-        if (prevHoverState == 'out') that.leave(that)
-      }
+        if (prevHoverState === 'out') that.leave(that)
+      };
 
       $.support.transition && this.$tip.hasClass('fade') ?
         $tip
@@ -1503,13 +1503,13 @@ if (typeof jQuery === 'undefined') {
   }
 
   Tooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
+    const $tip = this.tip();
+    const width = $tip[0].offsetWidth;
+    const height = $tip[0].offsetHeight;
 
     // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
+    let marginTop = parseInt($tip.css('margin-top'), 10);
+    let marginLeft = parseInt($tip.css('margin-left'), 10);
 
     // we must check for NaN for ie 8/9
     if (isNaN(marginTop))  marginTop  = 0
@@ -1532,21 +1532,21 @@ if (typeof jQuery === 'undefined') {
     $tip.addClass('in')
 
     // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
+    const actualWidth = $tip[0].offsetWidth;
+    const actualHeight = $tip[0].offsetHeight;
 
-    if (placement == 'top' && actualHeight != height) {
+    if (placement === 'top' && actualHeight !== height) {
       offset.top = offset.top + height - actualHeight
     }
 
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+    const delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight);
 
     if (delta.left) offset.left += delta.left
     else offset.top += delta.top
 
-    var isVertical          = /top|bottom/.test(placement)
-    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
+    const isVertical = /top|bottom/.test(placement);
+    const arrowDelta = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight;
+    const arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight';
 
     $tip.offset(offset)
     this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
@@ -1559,21 +1559,21 @@ if (typeof jQuery === 'undefined') {
   }
 
   Tooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
+    const $tip = this.tip();
+    const title = this.getTitle();
 
     $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
     $tip.removeClass('fade in top bottom left right')
   }
 
   Tooltip.prototype.hide = function (callback) {
-    var that = this
-    var $tip = $(this.$tip)
-    var e    = $.Event('hide.bs.' + this.type)
+    const that = this;
+    const $tip = $(this.$tip);
+    const e = $.Event('hide.bs.' + this.type);
 
     function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
+      if (that.hoverState !== 'in') $tip.detach()
+      if (that.$element) {
         that.$element
           .removeAttr('aria-describedby')
           .trigger('hidden.bs.' + that.type)
