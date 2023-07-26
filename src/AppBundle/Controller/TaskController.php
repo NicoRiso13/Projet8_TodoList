@@ -4,18 +4,25 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
+use AppBundle\Manager\TaskManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
     /**
      * @Route("/tasks", name="task_list")
      */
-    public function listAction()
+    public function listAction(): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
+        $user = $this->getUser();
+
+        return $this->render('task/list.html.twig', [
+            'tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll(),
+            'user' => $user
+        ]);
     }
 
     /**
@@ -24,13 +31,18 @@ class TaskController extends Controller
     public function createAction(Request $request)
     {
         $task = new Task();
+        $userId = $this->getUser();
+
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
+
             $em = $this->getDoctrine()->getManager();
 
+            $task->setUser($userId);
             $em->persist($task);
             $em->flush();
 
@@ -38,8 +50,8 @@ class TaskController extends Controller
 
             return $this->redirectToRoute('task_list');
         }
-
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**
@@ -52,7 +64,9 @@ class TaskController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $taskManager = $this->get(TaskManager::class);
+            $taskManager->updateTask($task);
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -83,11 +97,19 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Task $task)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($task);
-        $em->flush();
+        $userId = $this->getUser();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        if ($task == $userId) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($task);
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+        }else{
+
+            $this->addFlash('error', 'Vous n\'avez pas les droits necessaire pour supprimer cette tache.');
+        }
+
 
         return $this->redirectToRoute('task_list');
     }

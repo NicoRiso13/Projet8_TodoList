@@ -4,6 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  AppBundle\Manager\UserManager:
+        class: AppBundle\Manager\UserManager
+        arguments: ["@doctrine.orm.entity_manager", "@security.user_password_encoder.generic"]
+  AppBundle\Manager\TaskManager:
+        class: AppBundle\Manager\TaskManager
+        arguments: [ "@doctrine.orm.entity_manager" ]
