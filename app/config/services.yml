@@ -9,4 +9,4 @@ services:
         arguments: ["@doctrine.orm.entity_manager", "@security.user_password_encoder.generic"]
   AppBundle\Manager\TaskManager:
         class: AppBundle\Manager\TaskManager
-        arguments: [ "@doctrine.orm.entity_manager" ]
+        arguments: ["@doctrine.orm.entity_manager"]

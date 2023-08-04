@@ -3,11 +3,15 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Task;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class TaskManager
 {
-    protected EntityManagerInterface $entityManager;
+    private EntityManagerInterface $entityManager;
+
+
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -15,8 +19,9 @@ class TaskManager
 
     }
 
-    public function createTask(Task $task)
+    public function createTask(Task $task, User $user)
     {
+        $task->setUser($user);
         $this->entityManager->persist($task);
         $this->entityManager->flush();
     }
@@ -25,5 +30,20 @@ class TaskManager
     {
         $this->entityManager->flush();
     }
+
+    public function toggleTask(Task $task)
+    {
+        $task->toggle(!$task->isDone());
+        $this->entityManager->flush();
+    }
+
+    public function deleteTask(Task $task)
+    {
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
+
+    }
+
+
 
 }

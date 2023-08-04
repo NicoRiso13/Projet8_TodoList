@@ -42,9 +42,9 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private User $user;
+    private ?User $user;
 
     /**
      * @ORM\Column(type="boolean")
@@ -102,19 +102,14 @@ class Task
         $this->isDone = $flag;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser(): User
+
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User $user
-     * @return void
-     */
-    public function setUser(User $user): void
+
+    public function setUser(?User $user): void
     {
         $this->user = $user;
     }

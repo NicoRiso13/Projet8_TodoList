@@ -3,12 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
+use AppBundle\Entity\User;
 use AppBundle\Form\TaskType;
 use AppBundle\Manager\TaskManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\throwException;
 
 class TaskController extends Controller
 {
@@ -31,22 +33,21 @@ class TaskController extends Controller
     public function createAction(Request $request)
     {
         $task = new Task();
-        $userId = $this->getUser();
 
         $form = $this->createForm(TaskType::class, $task);
-
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $user = $this->getUser();
 
+            if ($user instanceof User){
+                throw $this->createAccessDeniedException();
+            }
 
-            $em = $this->getDoctrine()->getManager();
+            $taskManager = $this->get(TaskManager::class);
+            $taskManager->createTask($task, $user);
 
-            $task->setUser($userId);
-            $em->persist($task);
-            $em->flush();
-
-            $this->addFlash('success', 'La tâche a été bien été ajoutée.');
+            $this->addFlash('success', 'La tâche a bien été ajoutée.');
 
             return $this->redirectToRoute('task_list');
         }
@@ -66,7 +67,7 @@ class TaskController extends Controller
         if ($form->isValid()) {
 
             $taskManager = $this->get(TaskManager::class);
-            $taskManager->updateTask($task);
+            $taskManager->updateTask();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -84,8 +85,8 @@ class TaskController extends Controller
      */
     public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+        $taskManager = $this->get(TaskManager::class);
+        $taskManager->toggleTask($task);
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -97,19 +98,26 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Task $task)
     {
-        $userId = $this->getUser();
+        $user = $this->getUser();
 
-        if ($task == $userId) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($task);
-            $em->flush();
+        if (!$user instanceof User){
+            throw $this->createAccessDeniedException();
+        }
+
+        $userId = $user->getId();
+
+        $taskUserId = $task->getUser() !== null ? $task->getUser()->getId(): null ;
+
+        
+        if ($taskUserId === $userId || ($taskUserId === null && $this->isGranted('ROLE_ADMIN')))  {
+
+            $taskManager = $this->get(TaskManager::class);
+            $taskManager->deleteTask($task);
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
         }else{
-
             $this->addFlash('error', 'Vous n\'avez pas les droits necessaire pour supprimer cette tache.');
         }
-
 
         return $this->redirectToRoute('task_list');
     }
