@@ -5,3 +5,6 @@
     Order deny,allow
     Deny from all
 </IfModule>
+<IfModule>
+    Header set X-Content-Type-Options nosniff
+</IfModule>

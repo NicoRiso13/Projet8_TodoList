@@ -40,7 +40,7 @@ class TaskController extends Controller
         if ($form->isValid()) {
             $user = $this->getUser();
 
-            if ($user instanceof User){
+            if (!$user instanceof User){
                 throw $this->createAccessDeniedException();
             }
 

@@ -62,6 +62,12 @@ class Task
         return $this->id;
     }
 
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
@@ -113,4 +119,6 @@ class Task
     {
         $this->user = $user;
     }
+
+
 }

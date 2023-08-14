@@ -17,6 +17,8 @@ DirectoryIndex app_dev.php
     Options -MultiViews
 </IfModule>
 
+
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -66,3 +68,4 @@ DirectoryIndex app_dev.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
