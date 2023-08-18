@@ -6,13 +6,13 @@ use App\AppBundle\Entity\Task;
 use App\AppBundle\Entity\User;
 use App\AppBundle\Form\TaskType;
 use App\AppBundle\Manager\TaskManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use function PHPUnit\Framework\throwException;
 
-class TaskController extends Controller
+
+class TaskController extends AbstractController
 {
     /**
      * @Route("/tasks", name="task_list")

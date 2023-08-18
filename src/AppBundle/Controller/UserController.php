@@ -5,12 +5,12 @@ namespace App\AppBundle\Controller;
 use App\AppBundle\Entity\User;
 use App\AppBundle\Form\UserType;
 use App\AppBundle\Manager\UserManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller
+class UserController extends  AbstractController
 {
     /**
      * @Route("/users", name="user_list")
