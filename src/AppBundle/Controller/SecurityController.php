@@ -14,7 +14,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request): Response
+    public function loginAction(): Response
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
