@@ -18,15 +18,12 @@ class User implements UserInterface
 {
     /**
      * @ORM\Column(type="integer")
-     *
      * @ORM\Id
-     *
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private int $id;
 
     /**
-     *
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      */
@@ -39,9 +36,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
-     *
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
-     *
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      */
     private $email;
