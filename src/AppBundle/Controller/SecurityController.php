@@ -2,12 +2,14 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class SecurityController extends Controller
+
+class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="login")
@@ -27,17 +29,19 @@ class SecurityController extends Controller
 
     /**
      * @Route("/login_check", name="login_check")
+     * @throws Exception
      */
     public function loginCheck()
     {
-        // This code is never executed.
+        throw new Exception();
     }
 
     /**
      * @Route("/logout", name="logout")
+     * @throws Exception
      */
     public function logoutCheck()
     {
-        // This code is never executed.
+        throw new Exception();
     }
 }
