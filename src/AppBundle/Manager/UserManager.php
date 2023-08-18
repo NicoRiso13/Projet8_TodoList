@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Manager;
+namespace App\AppBundle\Manager;
 
-use AppBundle\Entity\User;
+use App\AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

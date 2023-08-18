@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Manager;
 
-use AppBundle\Entity\User;
-use AppBundle\Manager\UserManager;
+use App\AppBundle\Entity\User;
+use App\AppBundle\Manager\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

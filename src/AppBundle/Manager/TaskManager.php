@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Manager;
+namespace App\AppBundle\Manager;
 
-use AppBundle\Entity\Task;
-use AppBundle\Entity\User;
+use App\AppBundle\Entity\Task;
+use App\AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 

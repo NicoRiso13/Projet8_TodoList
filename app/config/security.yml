@@ -1,11 +1,11 @@
 security:
     encoders:
-        AppBundle\Entity\User: bcrypt
+        App\AppBundle\Entity\User: bcrypt
 
     providers:
         doctrine:
             entity:
-                class: AppBundle:User
+                class: App\AppBundle:User
                 property: username
 
     firewalls:

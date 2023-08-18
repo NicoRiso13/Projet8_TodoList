@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\AppBundle\Controller;
 
-use AppBundle\Entity\Task;
-use AppBundle\Entity\User;
-use AppBundle\Form\TaskType;
-use AppBundle\Manager\TaskManager;
+use App\AppBundle\Entity\Task;
+use App\AppBundle\Entity\User;
+use App\AppBundle\Form\TaskType;
+use App\AppBundle\Manager\TaskManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

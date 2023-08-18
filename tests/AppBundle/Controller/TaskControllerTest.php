@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Entity\Task;
-use AppBundle\Entity\User;
+use App\AppBundle\Entity\Task;
+use App\AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

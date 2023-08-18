@@ -4,7 +4,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "App\\": "src/"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -40,6 +40,13 @@
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*"
 
+    },
+
+    "scripts": {
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml",
+            "keep-outdated": true
+        }
     },
 
     "extra": {

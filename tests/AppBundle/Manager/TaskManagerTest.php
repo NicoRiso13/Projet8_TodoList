@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Manager;
 
-use AppBundle\Entity\Task;
-use AppBundle\Entity\User;
-use AppBundle\Manager\TaskManager;
+use App\AppBundle\Entity\Task;
+use App\AppBundle\Entity\User;
+use App\AppBundle\Manager\TaskManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use PHPUnit\Framework\TestCase;
