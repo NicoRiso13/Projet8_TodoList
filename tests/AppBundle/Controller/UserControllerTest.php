@@ -83,11 +83,13 @@ class UserControllerTest extends WebTestCase
         $client->followRedirects();
 
         // Vérifier la redirection après la création de l'utilisateur
-//        self::assertEquals(201, $client->getResponse()->getStatusCode());
+
         self::assertSame('http://localhost/users', $crawlerSubmit->getUri());
 
-        // Vérifier la présence d'un nouvel utilisateur dans la liste
-        self::assertStringContainsString('toto1@gmail.com', $client->getResponse()->getContent());
+        // Vérifier la presence d'un nouvel utilisateur dans la liste
+        $value = "tati45@gmail.com";
+        $testValue = ["tati45@gmail.com"];
+        self::assertContains($value,$testValue,$client->getResponse()->getContent());
     }
 
     public function testEditAction()

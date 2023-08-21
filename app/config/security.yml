@@ -1,6 +1,6 @@
 security:
     encoders:
-        harsh:
+        App\AppBundle\Entity\User:
             algorithm: bcrypt
             cost: 15
 
@@ -8,7 +8,7 @@ security:
     providers:
         doctrine:
             entity:
-                class: App\AppBundle:User
+                class: App\AppBundle\Entity\User
                 property: username
 
     firewalls:

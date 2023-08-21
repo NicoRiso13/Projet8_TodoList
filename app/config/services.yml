@@ -4,9 +4,12 @@ parameters:
 #    parameter_name: value
 
 services:
-  AppBundle\Manager\UserManager:
-        class: AppBundle\Manager\UserManager
-        arguments: ["@doctrine.orm.entity_manager", "@security.user_password_encoder.generic"]
-  AppBundle\Manager\TaskManager:
-        class: AppBundle\Manager\TaskManager
-        arguments: ["@doctrine.orm.entity_manager"]
+  App\AppBundle\Manager\UserManager:
+    public: true
+    class: App\AppBundle\Manager\UserManager
+    arguments: ["@doctrine.orm.entity_manager", "@security.user_password_encoder.generic"]
+  App\AppBundle\Manager\TaskManager:
+    public: true
+    class: App\AppBundle\Manager\TaskManager
+    arguments: ["@doctrine.orm.entity_manager"]
+

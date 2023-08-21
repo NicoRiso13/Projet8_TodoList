@@ -30,7 +30,7 @@ class UserController extends  AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $userManager = $this->get(UserManager::class);
             $userManager->createUser($user);
@@ -54,7 +54,7 @@ class UserController extends  AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $userManager = $this->get(UserManager::class);
             $userManager->updateUser($user);

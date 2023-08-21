@@ -1,5 +1,6 @@
 <?php
 
+use App\AppKernel;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 

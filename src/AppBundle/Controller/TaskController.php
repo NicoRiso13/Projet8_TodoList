@@ -37,7 +37,8 @@ class TaskController extends AbstractController
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $user = $this->getUser();
 
             if (!$user instanceof User){
@@ -64,7 +65,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $taskManager = $this->get(TaskManager::class);
             $taskManager->updateTask();
