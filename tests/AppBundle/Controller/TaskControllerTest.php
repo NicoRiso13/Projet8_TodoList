@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller;
 use App\AppBundle\Entity\Task;
 use App\AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase

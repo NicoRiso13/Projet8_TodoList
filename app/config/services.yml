@@ -4,6 +4,12 @@ parameters:
 #    parameter_name: value
 
 services:
+
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
   App\AppBundle\Manager\UserManager:
     public: true
     class: App\AppBundle\Manager\UserManager
@@ -12,4 +18,10 @@ services:
     public: true
     class: App\AppBundle\Manager\TaskManager
     arguments: ["@doctrine.orm.entity_manager"]
+  App\AppBundle\Fixtures\DataFixtures:
+    public: true
+    class: App\AppBundle\Fixtures\DataFixtures
+    tags: ["@doctrine.fixture.orm","@security.user_password_encoder.generic"]
+
+
 
