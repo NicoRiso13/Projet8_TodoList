@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once dirname(__FILE__).'/../var/SymfonyRequirements.php';
+require_once dirname(__FILE__) . '/../var/SymfonyRequirements.php';
 
 $lineSize = 70;
 $symfonyRequirements = new SymfonyRequirements();
@@ -80,7 +80,7 @@ function get_error_message(Requirement $requirement, $lineSize)
         return;
     }
 
-    $errorMessage = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL.'   ').PHP_EOL;
+    $errorMessage = symfony_requirementswordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL . '   ') . PHP_EOL;
     $errorMessage .= '   > '.wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL.'   > ').PHP_EOL;
 
     return $errorMessage;
@@ -92,7 +92,7 @@ function echo_title($title, $style = null)
 
     echo PHP_EOL;
     echo_style($style, $title.PHP_EOL);
-    echo_style($style, str_repeat('~', strlen($title)).PHP_EOL);
+    echo_style($style, symfony_requirementsstr_repeat('~', strlen($title)) . PHP_EOL);
     echo PHP_EOL;
 }
 

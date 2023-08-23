@@ -7,8 +7,8 @@
             "App\\": "src/"
         },
         "classmap": [
-            "src/AppKernel.php",
-            "app/AppCache.php"
+          "src/AppKernel.php",
+          "app/AppCache.php"
         ]
     },
     "autoload-dev": {
