@@ -30,8 +30,13 @@
         "symfony/security-acl": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "symfony/flex": "^1.20",
-        "doctrine/annotations": "^1.14"
+        "doctrine/annotations": "^1.14",
+        "ext-pdo": "*",
+        "symfony/twig-bundle": "*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
+
     "require-dev": {
         "symfony/phpunit-bridge": "^4.0",
         "phpunit/phpunit": "^9",

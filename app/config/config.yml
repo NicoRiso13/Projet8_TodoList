@@ -7,7 +7,6 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    craue_config.cache_adapter.class: Craue\ConfigBundle\CacheAdapter\DoctrineCacheBundleAdapter
 
 framework:
     #esi:             ~
@@ -38,24 +37,26 @@ twig:
     form_themes: ['bootstrap_3_layout.html.twig']
 
 # Doctrine Configuration
-
 doctrine:
     dbal:
-        dbname: todo_list
-        host: 127.0.0.1
-        port: null
-        user: root
-        password: 1234
-        driver: pdo_mysql
-        # if the url option is specified, it will override the above config
-        url: mysql://root:1234@127.0.0.1:3306/todo_list
-        # the DBAL driverClass option
-
+        default_connection: default
+        connections:
+            default:
+                dbname: todo_list
+                user: root
+                password: 1234
+                host: localhost
+                server_version: '5.6'
+#        driver: pdo_mysql
+#        # if the url option is specified, it will override the above config
+#        url: mysql://root:1234@127.0.0.1:3306/todo_list
+#        # the DBAL driverClass option
     orm:
         auto_mapping: true
         # the standard distribution overrides this to be true in debug, false otherwise
         auto_generate_proxy_classes: false
 
+# Doctrine_migration Configuration
 doctrine_migrations:
     migrations_paths:
         # namespace is arbitrary but should be different from App\Migrations
