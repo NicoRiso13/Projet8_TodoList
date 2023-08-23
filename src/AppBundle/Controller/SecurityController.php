@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
      */
     public function loginCheck()
     {
-        throw new Exception();
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -42,6 +42,6 @@ class SecurityController extends AbstractController
      */
     public function logoutCheck()
     {
-        throw new Exception();
+        return $this->render('default/index.html.twig');
     }
 }
