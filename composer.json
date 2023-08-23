@@ -43,13 +43,6 @@
 
     },
 
-    "scripts": {
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
-            "keep-outdated": true
-        }
-    },
-
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",

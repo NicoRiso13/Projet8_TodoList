@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="470b4890-3930-46f1-b5c6-2743f7c8ff4f" name="Changes" comment="commit remove fix security controller">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="470b4890-3930-46f1-b5c6-2743f7c8ff4f" name="Changes" comment="commit remove fix security controller 2">
+      <change beforePath="$PROJECT_DIR$/app/config/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config/parameters.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +225,7 @@
       <workItem from="1690912529249" duration="31365000" />
       <workItem from="1691680231444" duration="23589000" />
       <workItem from="1692295966533" duration="24476000" />
-      <workItem from="1692630023024" duration="19596000" />
+      <workItem from="1692630023024" duration="19896000" />
     </task>
     <task id="LOCAL-00001" summary="commit runProject">
       <created>1689336964062</created>
@@ -380,7 +381,21 @@
       <option name="project" value="LOCAL" />
       <updated>1692766488104</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="commit remove fix security controller">
+      <created>1692766694449</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1692766694449</updated>
+    </task>
+    <task id="LOCAL-00024" summary="commit remove fix security controller 2">
+      <created>1692766862604</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1692766862604</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -417,7 +432,8 @@
     <MESSAGE value="commit add favicon" />
     <MESSAGE value="commit remove htaccess files" />
     <MESSAGE value="commit remove fix security controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit remove fix security controller" />
+    <MESSAGE value="commit remove fix security controller 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit remove fix security controller 2" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
