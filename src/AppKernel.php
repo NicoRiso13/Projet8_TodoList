@@ -22,12 +22,15 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new App\AppBundle\AppBundle(),
+            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+
 
         }
 

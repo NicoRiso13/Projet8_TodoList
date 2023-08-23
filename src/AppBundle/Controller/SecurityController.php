@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
      */
     public function loginCheck()
     {
-        return throw new Exception();
+        throw new Exception();
     }
 
     /**
@@ -42,6 +42,6 @@ class SecurityController extends AbstractController
      */
     public function logoutCheck()
     {
-        return throw new Exception();
+        throw new Exception();
     }
 }
