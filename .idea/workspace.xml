@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="470b4890-3930-46f1-b5c6-2743f7c8ff4f" name="Changes" comment="commit add favicon">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/.htaccess" beforeDir="false" />
-    </list>
+    <list default="true" id="470b4890-3930-46f1-b5c6-2743f7c8ff4f" name="Changes" comment="commit remove htaccess files" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -223,7 +220,7 @@
       <workItem from="1690912529249" duration="31365000" />
       <workItem from="1691680231444" duration="23589000" />
       <workItem from="1692295966533" duration="24476000" />
-      <workItem from="1692630023024" duration="17157000" />
+      <workItem from="1692630023024" duration="17782000" />
     </task>
     <task id="LOCAL-00001" summary="commit runProject">
       <created>1689336964062</created>
@@ -351,7 +348,14 @@
       <option name="project" value="LOCAL" />
       <updated>1692763039893</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="commit remove htaccess files">
+      <created>1692764822293</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1692764822293</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,7 +390,8 @@
     <MESSAGE value="commit symfony version 4 phpunit remove bin folder" />
     <MESSAGE value="commit add fixtures" />
     <MESSAGE value="commit add favicon" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit add favicon" />
+    <MESSAGE value="commit remove htaccess files" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit remove htaccess files" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
