@@ -37,20 +37,18 @@ twig:
     form_themes: ['bootstrap_3_layout.html.twig']
 
 # Doctrine Configuration
-
 doctrine:
     dbal:
         driver: pdo_mysql
         # if the url option is specified, it will override the above config
         url: mysql://root:1234@127.0.0.1:3306/todo_list
         # the DBAL driverClass option
-
-
     orm:
         auto_mapping: true
         # the standard distribution overrides this to be true in debug, false otherwise
         auto_generate_proxy_classes: false
 
+# Doctrine_migration Configuration
 doctrine_migrations:
     migrations_paths:
         # namespace is arbitrary but should be different from App\Migrations
