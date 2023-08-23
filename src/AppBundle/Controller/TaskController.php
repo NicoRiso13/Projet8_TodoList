@@ -1,21 +1,30 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\AppBundle\Controller;
 
-use AppBundle\Entity\Task;
-use AppBundle\Form\TaskType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\AppBundle\Entity\Task;
+use App\AppBundle\Entity\User;
+use App\AppBundle\Form\TaskType;
+use App\AppBundle\Manager\TaskManager;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class TaskController extends Controller
+
+class TaskController extends AbstractController
 {
     /**
      * @Route("/tasks", name="task_list")
      */
-    public function listAction()
+    public function listAction(): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
+        $user = $this->getUser();
+
+        return $this->render('task/list.html.twig', [
+            'tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll(),
+            'user' => $user
+        ]);
     }
 
     /**
@@ -24,22 +33,27 @@ class TaskController extends Controller
     public function createAction(Request $request)
     {
         $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
 
+        $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $em->persist($task);
-            $em->flush();
+            $user = $this->getUser();
 
-            $this->addFlash('success', 'La tâche a été bien été ajoutée.');
+            if (!$user instanceof User){
+                throw $this->createAccessDeniedException();
+            }
+
+            $taskManager = $this->get(TaskManager::class);
+            $taskManager->createTask($task, $user);
+
+            $this->addFlash('success', 'La tâche a bien été ajoutée.');
 
             return $this->redirectToRoute('task_list');
         }
-
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**
@@ -51,8 +65,10 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $taskManager = $this->get(TaskManager::class);
+            $taskManager->updateTask();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -70,8 +86,8 @@ class TaskController extends Controller
      */
     public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+        $taskManager = $this->get(TaskManager::class);
+        $taskManager->toggleTask($task);
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -83,11 +99,26 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Task $task)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($task);
-        $em->flush();
+        $user = $this->getUser();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        if (!$user instanceof User){
+            throw $this->createAccessDeniedException();
+        }
+
+        $userId = $user->getId();
+
+        $taskUserId = $task->getUser() !== null ? $task->getUser()->getId(): null ;
+
+        
+        if ($taskUserId === $userId || ($taskUserId === null && $this->isGranted('ROLE_ADMIN')))  {
+
+            $taskManager = $this->get(TaskManager::class);
+            $taskManager->deleteTask($task);
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+        }else{
+            $this->addFlash('error', 'Vous n\'avez pas les droits necessaire pour supprimer cette tache.');
+        }
 
         return $this->redirectToRoute('task_list');
     }

@@ -4,6 +4,24 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  App\AppBundle\Manager\UserManager:
+    public: true
+    class: App\AppBundle\Manager\UserManager
+    arguments: ["@doctrine.orm.entity_manager", "@security.user_password_encoder.generic"]
+  App\AppBundle\Manager\TaskManager:
+    public: true
+    class: App\AppBundle\Manager\TaskManager
+    arguments: ["@doctrine.orm.entity_manager"]
+  App\AppBundle\Fixtures\DataFixtures:
+    public: true
+    class: App\AppBundle\Fixtures\DataFixtures
+    tags: ["@doctrine.fixture.orm","@security.user_password_encoder.generic"]
+
+
+

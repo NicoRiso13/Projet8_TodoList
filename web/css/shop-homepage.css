@@ -1,15 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
 /*!
  * Start Bootstrap - Shop Homepage (http://startbootstrap.com/)
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+
+ font-family: 'Montserrat', sans-serif;
  */
+
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+    font-weight: 500;
+}
+
+* .btn {
+    font-weight: 300;
+}
 
 body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
+.btn_create_task{
+    padding: 0 15px;
+    margin-bottom: 25px ;
+}
+
+.bloc-task{
+    margin-bottom: 20px;
+}
 
 .slide-image {
     width: 100%;
+    margin: 50px 0;
 }
 
 .carousel-holder {

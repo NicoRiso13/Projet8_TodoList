@@ -4,10 +4,10 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "App\\": "src/"
         },
         "classmap": [
-            "app/AppKernel.php",
+            "src/AppKernel.php",
             "app/AppCache.php"
         ]
     },
@@ -17,38 +17,44 @@
         }
     },
     "require": {
-        "php": ">=5.5.9",
-        "symfony/symfony": "3.1.*",
+        "php": ">=7.4",
+        "symfony/symfony": "^4.4",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
-        "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^2.8",
+        "symfony/swiftmailer-bundle": "^3.0",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-apcu": "^1.0",
-        "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "^2.0"
+        "sensio/framework-extra-bundle": "^5.0",
+        "symfony/orm-pack": "^2.3",
+        "doctrine/cache": "^1.13",
+        "symfony/security-acl": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^3.1"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^4.0",
+        "phpunit/phpunit": "^9",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-doctrine": "^1.3",
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "phpstan/phpstan-symfony": "^1.3",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/browser-kit": "*",
+        "symfony/css-selector": "*",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "symfony/maker-bundle": "^1.39"
+
     },
+
     "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ],
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ]
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml",
+            "keep-outdated": true
+        }
     },
+
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
@@ -58,6 +64,11 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     }
 }

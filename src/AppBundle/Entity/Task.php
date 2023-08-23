@@ -1,57 +1,74 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
  * @ORM\Table
  */
 class Task
 {
     /**
      * @ORM\Column(type="integer")
+     *
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="text")
+     *
      * @Assert\NotBlank(message="Vous devez saisir du contenu.")
      */
-    private $content;
+    private string $content;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?User $user;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isDone;
+    private bool $isDone;
 
     public function __construct()
     {
-        $this->createdAt = new \Datetime();
+        $this->createdAt = new \DateTime();
         $this->isDone = false;
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getCreatedAt()
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -61,7 +78,7 @@ class Task
         $this->createdAt = $createdAt;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -71,7 +88,7 @@ class Task
         $this->title = $title;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -81,7 +98,7 @@ class Task
         $this->content = $content;
     }
 
-    public function isDone()
+    public function isDone(): bool
     {
         return $this->isDone;
     }
@@ -90,4 +107,18 @@ class Task
     {
         $this->isDone = $flag;
     }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+
 }

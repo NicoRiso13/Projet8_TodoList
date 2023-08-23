@@ -1,20 +1,23 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\AppBundle\Controller;
 
-use AppBundle\Entity\User;
-use AppBundle\Form\UserType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\AppBundle\Entity\User;
+use App\AppBundle\Form\UserType;
+use App\AppBundle\Manager\UserManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller
+class UserController extends  AbstractController
 {
     /**
      * @Route("/users", name="user_list")
      */
-    public function listAction()
+    public function listAction(): Response
     {
+
         return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]);
     }
 
@@ -25,16 +28,12 @@ class UserController extends Controller
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
-
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $em->persist($user);
-            $em->flush();
+            $userManager = $this->get(UserManager::class);
+            $userManager->createUser($user);
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
@@ -49,15 +48,16 @@ class UserController extends Controller
      */
     public function editAction(User $user, Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->getDoctrine()->getManager()->flush();
+            $userManager = $this->get(UserManager::class);
+            $userManager->updateUser($user);
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 

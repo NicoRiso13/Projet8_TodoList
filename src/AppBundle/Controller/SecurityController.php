@@ -1,42 +1,47 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class SecurityController extends Controller
+
+class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction(): Response
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', array(
+        return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error'         => $error,
-        ));
+            'error' => $error,
+        ]);
     }
 
     /**
      * @Route("/login_check", name="login_check")
+     * @throws Exception
      */
     public function loginCheck()
     {
-        // This code is never executed.
+        throw new Exception();
     }
 
     /**
      * @Route("/logout", name="logout")
+     * @throws Exception
      */
     public function logoutCheck()
     {
-        // This code is never executed.
+        throw new Exception();
     }
 }
