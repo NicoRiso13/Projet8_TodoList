@@ -41,11 +41,7 @@ twig:
 
 doctrine:
     dbal:
-        dbname: todo_list
-        host: 127.0.0.1
-        port: 3306
-        user: root
-        password: 1234
+
         driver: pdo_mysql
         # if the url option is specified, it will override the above config
         url: mysql://root:1234@127.0.0.1:3306/todo_list
