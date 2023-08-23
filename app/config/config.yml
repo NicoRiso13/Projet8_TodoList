@@ -45,6 +45,7 @@ doctrine:
         url: mysql://root:1234@127.0.0.1:3306/todo_list
         # the DBAL driverClass option
 
+
     orm:
         auto_mapping: true
         # the standard distribution overrides this to be true in debug, false otherwise
