@@ -21,7 +21,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 }
 
 /** @var ClassLoader $loader */
-$loader = require __DIR__.'/../app/autoload.php';
+$loader = require __DIR__ . '/../app/autoload.php';
 Debug::enable();
 
 $kernel = new AppKernel('dev', true);
