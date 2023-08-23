@@ -57,7 +57,7 @@
 
     "scripts": {
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
+            "file": "parameters.yml",
             "keep-outdated": true
         }
     },
@@ -70,7 +70,7 @@
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+            "file": "parameters.yml"
         }
     },
     "config": {
