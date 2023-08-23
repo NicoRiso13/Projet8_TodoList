@@ -43,7 +43,7 @@ doctrine:
     dbal:
         dbname: todo_list
         host: 127.0.0.1
-        port: null
+        port: 3306
         user: root
         password: 1234
         driver: pdo_mysql
