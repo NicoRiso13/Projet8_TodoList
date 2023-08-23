@@ -7,7 +7,6 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    craue_config.cache_adapter.class: Craue\ConfigBundle\CacheAdapter\DoctrineCacheBundleAdapter
 
 framework:
     #esi:             ~
@@ -41,7 +40,6 @@ twig:
 
 doctrine:
     dbal:
-
         driver: pdo_mysql
         # if the url option is specified, it will override the above config
         url: mysql://root:1234@127.0.0.1:3306/todo_list
