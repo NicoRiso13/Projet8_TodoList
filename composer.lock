@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "186a9934fb86a8196cb41d4a097fc94d",
+    "content-hash": "d4cada89533da393db28ec8cf8a220ae",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2388,6 +2388,71 @@
             "time": "2022-06-27T13:16:42+00:00"
         },
         {
+            "name": "symfony/flex",
+            "version": "v1.20.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/flex.git",
+                "reference": "a2554c7e1b669f5049c1b67bc56f13aa1c4bf7da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/a2554c7e1b669f5049c1b67bc56f13aa1c4bf7da",
+                "reference": "a2554c7e1b669f5049c1b67bc56f13aa1c4bf7da",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0|^2.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0.2|^2.0",
+                "symfony/dotenv": "^4.4|^5.0|^6.0",
+                "symfony/filesystem": "^4.4|^5.0|^6.0",
+                "symfony/phpunit-bridge": "^4.4.12|^5.0|^6.0",
+                "symfony/process": "^4.4|^5.0|^6.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Symfony\\Flex\\Flex"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Flex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien.potencier@gmail.com"
+                }
+            ],
+            "description": "Composer plugin for Symfony",
+            "support": {
+                "issues": "https://github.com/symfony/flex/issues",
+                "source": "https://github.com/symfony/flex/tree/v1.20.2"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-08-04T09:02:01+00:00"
+        },
+        {
             "name": "symfony/monolog-bundle",
             "version": "v3.8.0",
             "source": {
@@ -2467,52 +2532,6 @@
                 }
             ],
             "time": "2022-05-10T14:24:36+00:00"
-        },
-        {
-            "name": "symfony/orm-pack",
-            "version": "v2.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/orm-pack.git",
-                "reference": "13b7bcec955f163e3cbf6b24773b9ad3127213e2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/orm-pack/zipball/13b7bcec955f163e3cbf6b24773b9ad3127213e2",
-                "reference": "13b7bcec955f163e3cbf6b24773b9ad3127213e2",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/annotations": "*",
-                "doctrine/doctrine-bundle": "*",
-                "doctrine/doctrine-migrations-bundle": "*",
-                "doctrine/orm": "*"
-            },
-            "type": "symfony-pack",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A pack for the Doctrine ORM",
-            "support": {
-                "issues": "https://github.com/symfony/orm-pack/issues",
-                "source": "https://github.com/symfony/orm-pack/tree/v2.3.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-08-21T09:10:49+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -6217,54 +6236,6 @@
                 }
             ],
             "time": "2022-11-08T14:39:54+00:00"
-        },
-        {
-            "name": "symfony/profiler-pack",
-            "version": "v1.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/profiler-pack.git",
-                "reference": "bcd6e80af9819454ac18594362e7875fd1d771c7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/profiler-pack/zipball/bcd6e80af9819454ac18594362e7875fd1d771c7",
-                "reference": "bcd6e80af9819454ac18594362e7875fd1d771c7",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/stopwatch": "*",
-                "symfony/web-profiler-bundle": "*"
-            },
-            "require-dev": {
-                "symfony/stopwatch": "*",
-                "symfony/web-profiler-bundle": "*"
-            },
-            "type": "symfony-pack",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A pack for the Symfony web profiler",
-            "support": {
-                "issues": "https://github.com/symfony/profiler-pack/issues",
-                "source": "https://github.com/symfony/profiler-pack/tree/v1.0.6"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-08-20T17:27:58+00:00"
         },
         {
             "name": "theseer/tokenizer",

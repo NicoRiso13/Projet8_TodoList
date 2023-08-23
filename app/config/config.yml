@@ -56,5 +56,16 @@ doctrine:
         # the standard distribution overrides this to be true in debug, false otherwise
         auto_generate_proxy_classes: false
 
+doctrine_migrations:
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        'DoctrineMigrations': '%kernel.project_dir%/migrations'
+    enable_profiler: false
+    storage:
+        # Default (SQL table) metadata storage configuration
+        table_storage:
+            table_name: 'migration_versions'
+
 
 
