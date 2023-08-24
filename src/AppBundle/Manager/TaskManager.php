@@ -31,12 +31,6 @@ class TaskManager
         $this->entityManager->flush();
     }
 
-    public function toggleTask(Task $task)
-    {
-        $task->toggle(!$task->isDone());
-        $this->entityManager->flush();
-    }
-
     public function deleteTask(Task $task)
     {
         $this->entityManager->remove($task);

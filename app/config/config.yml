@@ -47,7 +47,7 @@ doctrine:
                 user: root
                 password: 1234
                 host: localhost
-                server_version: '5.6'
+                server_version: '5.7'
 #        driver: pdo_mysql
 #        # if the url option is specified, it will override the above config
 #        url: mysql://root:1234@127.0.0.1:3306/todo_list

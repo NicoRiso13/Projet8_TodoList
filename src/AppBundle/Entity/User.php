@@ -51,6 +51,14 @@ class User implements UserInterface
         return $this->id;
     }
 
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
@@ -109,4 +117,6 @@ class User implements UserInterface
     public function eraseCredentials()
     {
     }
+
+
 }

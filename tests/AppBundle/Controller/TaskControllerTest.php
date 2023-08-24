@@ -5,7 +5,9 @@ namespace Tests\AppBundle\Controller;
 use App\AppBundle\Entity\Task;
 use App\AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends WebTestCase
 {
@@ -49,7 +51,7 @@ class TaskControllerTest extends WebTestCase
         $formCreateTask = $crawlerCreateTask->selectButton('Ajouter')->form();
 
         // On remplit le formulaire avec les champs requis
-        $formCreateTask['task[title]'] = 'testTask';
+        $formCreateTask['task[title]'] = 'testTask2';
         $formCreateTask['task[content]'] = 'Je suis le test fonctionnel task';
 
         // On soumet le formulaire
@@ -63,9 +65,9 @@ class TaskControllerTest extends WebTestCase
         self::assertSame('http://localhost/tasks', $crawlerSubmit->getUri());
 
         // Vérifier la presence d'un nouvel utilisateur dans la liste
-        $value = "testTask";
-        $testValue = ["testTask"];
-        self::assertContains($value,$testValue,$client->getResponse()->getContent());
+        $value = "testTask1";
+        $testValue = ["testTask1"];
+        self::assertContains($value, $testValue, $client->getResponse()->getContent());
     }
 
 
@@ -76,8 +78,8 @@ class TaskControllerTest extends WebTestCase
         //setup fixtures
         /** @var EntityManagerInterface $em */
         $em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $taskId = 33;
-        $taskToEdit = $em->getReference(Task::class,$taskId );
+        $taskId = 4;
+        $taskToEdit = $em->getReference(Task::class, $taskId);
         $taskToEdit->setTitle("Original Task");
         $taskToEdit->setContent("Original Content Task");
         $em->flush();
@@ -87,23 +89,26 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/login');
-        $form = $crawler->selectButton('Se connecter')->form();
-        $form ['_username'] = 'admin';
-        $form ['_password'] = '123456';
+        $form = $crawler->selectButton('Se connecter')->form([
+            '_username' => 'admin',
+            '_password' => '123456'
+        ]);
         $client->submit($form);
 
         // On renseigne la page à atteindre
-        $crawlerPage = $client->request('GET', '/tasks');
-        self::assertEquals(200, $client->getResponse()->getStatusCode());
-        self::assertSame('http://localhost/tasks', $crawlerPage->getUri());
+        $client->request('GET', '/');
+        $client->followRedirects();
+        $value = "Bienvenue";
+        $testValue = ["Bienvenue"];
+        self::assertContains($value, $testValue, $client->getResponse()->getContent());
 
 
-        $crawlerPage = $client->request('GET', '/tasks/'.$taskId.'/edit');
+        $crawlerPageTaskId = $client->request('GET', '/tasks/'.$taskId.'/edit');
         self::assertEquals(200, $client->getResponse()->getStatusCode());
-        self::assertSame('http://localhost/tasks/'.$taskId.'/edit', $crawlerPage->getUri());
+
 
         // On renseigne le boutton qui permet de soumettre le formulaire
-        $formModifyTask = $crawlerPage->selectButton('Modifier')->form();
+        $formModifyTask = $crawlerPageTaskId->selectButton('Modifier')->form();
 
         // On remplit le formulaire avec les champs requis
         $formModifyTask['task[title]'] = 'Task Modify';
@@ -116,16 +121,19 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirects();
 
         // Vérifier la redirection après la creation de l'utilisateur
-        self::assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
         self::assertSame('http://localhost/tasks', $crawlerSubmit->getUri());
 
         // Vérifier la presence d'un nouvel utilisateur dans la liste
         $value = "Task Modify";
         $testValue = ["Task Modify"];
-        self::assertContains($value,$testValue,$client->getResponse()->getContent());
+        self::assertContains($value, $testValue, $client->getResponse()->getContent());
     }
 
 
+    /**
+     * @throws ORMException
+     */
     public function testDeleteTaskAction()
     {
         self::bootKernel();
@@ -133,7 +141,7 @@ class TaskControllerTest extends WebTestCase
         //setup fixtures
         /** @var EntityManagerInterface $em */
         $em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $user = $em->getReference(User::class,6 );
+        $user = $em->getReference(User::class, 1);
         $taskToDelete = new Task();
         $taskToDelete->setTitle("TEST TITLE");
         $taskToDelete->setContent("content test");

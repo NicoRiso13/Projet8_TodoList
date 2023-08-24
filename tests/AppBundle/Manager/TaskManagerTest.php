@@ -31,16 +31,6 @@ class TaskManagerTest extends TestCase
         $taskManager->updateTask();
     }
 
-    public function testToggleTask()
-    {
-        $task = $this->createMock(Task::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-        $entityManager->expects(self::once())->method('flush');
-        $task->expects(self::once())->method('toggle');
-        $task->expects(self::once())->method('isDone');
-        $taskManager = new TaskManager($entityManager);
-        $taskManager->toggleTask($task);
-    }
 
     public function testDeleteTask()
     {

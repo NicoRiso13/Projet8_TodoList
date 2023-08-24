@@ -22,7 +22,7 @@
                 <div>
                     <form action="{{ path('task_toggle', {'id' : task.id }) }}">
                         <button class="btn btn-success btn-sm pull-right" type="button">
-                            {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                            {% if task.isDone %}Tâche faite{% else %}Tâche non terminée{% endif %}
                         </button>
                     </form>
                     {% if user == task.user %}

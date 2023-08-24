@@ -6,6 +6,8 @@ use App\AppBundle\Entity\Task;
 use App\AppBundle\Entity\User;
 use App\AppBundle\Form\TaskType;
 use App\AppBundle\Manager\TaskManager;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,10 +86,10 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
-    public function toggleTaskAction(Task $task)
+    public function toggleTaskAction(Task $task): RedirectResponse
     {
-        $taskManager = $this->get(TaskManager::class);
-        $taskManager->toggleTask($task);
+        $task->toggle(!$task->isDone());
+        $this->getDoctrine()->getManager()->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 

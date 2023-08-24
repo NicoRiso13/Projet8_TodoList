@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 
-
-
 <html lang="fr">
 
 <head>
@@ -9,8 +7,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Découvrez notre application ToDoList permettant de créer des taches, ToDoList est une référence en termes de pratique, avec ToDoList fini les rendez vous manqués, Todolist est l'appli qu'il vous faut !!">
+    <meta name="author" content="Nicolas Riso">
 
 
     <title>To Do List app</title>
@@ -18,8 +16,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
             integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
             crossorigin="anonymous"></script>
-
     <!-- Bootstrap Core CSS -->
+
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
 
     <!-- Custom CSS -->
@@ -47,6 +45,13 @@
 
 <!-- Page Content -->
 <div class="container">
+
+    {% if app.user %}
+        <div class="connected">
+            <h6>L'utilisateur est connecté avec le compte: <span style="font-weight: bold">{{ app.user.email }}</span></h6>
+        </div>
+    {% endif %}
+
     <div class="row">
         {% if  is_granted('ROLE_ADMIN') %}
             <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
@@ -103,11 +108,9 @@
     </footer>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
-        crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
+<script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}" type="text/css"></script>
+
 </body>
 </html>

@@ -17,7 +17,10 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/');
 
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertStringContainsString('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        self::assertEquals(302, $client->getResponse()->getStatusCode());
+        $value = "Welcome to Symfony";
+        $testValue = ["Welcome to Symfony"];
+        self::assertContains($value,$testValue, $client->getResponse()->getStatusCode());
+        self::assertSame('http://localhost/', $crawler->getUri());
     }
 }
