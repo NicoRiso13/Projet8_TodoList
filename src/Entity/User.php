@@ -68,7 +68,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -85,12 +85,12 @@ class User implements UserInterface
         return null;
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword($password): self
+    public function setPassword($password): User
     {
         $this->password = $password;
 
@@ -102,7 +102,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail($email): self
+    public function setEmail($email): User
     {
         $this->email = $email;
 
@@ -117,7 +117,7 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): User
     {
         $this->roles = $roles;
 
