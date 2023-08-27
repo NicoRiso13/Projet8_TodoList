@@ -326,9 +326,6 @@
             "./src/Kernel.php"
         ]
     },
-    "symfony/http-client-contracts": {
-        "version": "v2.2.0"
-    },
     "symfony/http-foundation": {
         "version": "v4.0.15"
     },
@@ -421,9 +418,6 @@
     },
     "symfony/property-access": {
         "version": "v4.0.15"
-    },
-    "symfony/property-info": {
-        "version": "v5.1.7"
     },
     "symfony/routing": {
         "version": "5.1",
