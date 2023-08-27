@@ -1572,7 +1572,7 @@ if (typeof jQuery === 'undefined') {
     var e    = $.Event('hide.bs.' + this.type)
 
     function complete() {
-      if (that.hoverState != 'in') $tip.detach()
+      if (that.hoverState !== 'in') $tip.detach()
       if (that.$element) {
         that.$element
           .removeAttr('aria-describedby')

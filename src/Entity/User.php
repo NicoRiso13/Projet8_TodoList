@@ -22,14 +22,14 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      * @Assert\NotNull(message="Le champ nom d'utilisateur ne peut être null.")
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,7 +37,7 @@ class User implements UserInterface
      * @Assert\Length(min="6", max="30", groups={"registration"})
      * @Assert\NotNull(message="Le champ mot de passe ne peut être null.", groups={"registration"})
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
@@ -45,17 +45,17 @@ class User implements UserInterface
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      * @Assert\NotNull(message="Le champ email ne peut être null.")
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="author")
      */
-    private $tasks;
+    private iterable $tasks;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     public function __construct()
     {
@@ -63,7 +63,7 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -97,7 +97,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -124,7 +124,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
