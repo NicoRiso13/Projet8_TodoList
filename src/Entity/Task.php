@@ -46,7 +46,7 @@ class Task
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
      */
-    private iterable $author;
+    private $author;
 
     public function __construct()
     {
@@ -59,26 +59,12 @@ class Task
         return $this->id;
     }
 
-    public function toggle($flag)
+
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
     }
 
-    /**
-     * @return iterable
-     */
-    public function getAuthor(): iterable
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param iterable $author
-     */
-    public function setAuthor(iterable $author): void
-    {
-        $this->author = $author;
-    }
 
     /**
      * @return DateTime
@@ -142,6 +128,22 @@ class Task
     public function setIsDone(bool $isDone): void
     {
         $this->isDone = $isDone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param mixed $author
+     */
+    public function setAuthor($author): void
+    {
+        $this->author = $author;
     }
 
 
