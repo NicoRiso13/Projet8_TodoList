@@ -1,10 +1,3 @@
-# ToDoList
-
-Project 8 of OpenClassrooms "PHP/Symfony app developper" course.
-
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e56deac0c32a413785d136ddabc37762)](https://www.codacy.com/gh/CharlotteSaury/ToDoList/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CharlotteSaury/ToDoList&amp;utm_campaign=Badge_Grade)
-<img src="https://travis-ci.com/CharlotteSaury/ToDoList.svg?branch=main" alt="TravisCI badge" />
-
 ## Description
 
 ToDo & Co is a new startup developping an application to manage life daily tasks. However, application has been developped very quickly to make demonstration to potential investors, as minimum viable product.
@@ -68,9 +61,6 @@ To generate up-to-date test-coverage:
 `php bin/phpunit --coverage-html public/test-coverage`
 Test-coverage then accessible on /public/test-coverage/index.html
 
-## Contributing
-
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Documentation
 
