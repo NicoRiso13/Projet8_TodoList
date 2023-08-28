@@ -51,7 +51,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="author")
      */
-    private Collection $tasks;
+    private ArrayCollection $tasks;
 
     /**
      * @ORM\Column(type="json")
