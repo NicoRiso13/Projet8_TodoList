@@ -13,7 +13,7 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
-.idea
+
 
 ###> phpunit/phpunit ###
 .phpunit.result.cache

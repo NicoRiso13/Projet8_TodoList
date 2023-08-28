@@ -45,12 +45,12 @@ class User implements UserInterface
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      * @Assert\NotNull(message="Le champ email ne peut être null.")
      */
-    private string $email;
+    private $email;
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="author")
      */
-    private iterable $tasks;
+    private ArrayCollection $tasks;
 
     /**
      * @ORM\Column(type="json")
@@ -63,51 +63,12 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    public function setUsername($username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
 
     public function getSalt()
     {
         return null;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword($password): User
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email): User
-    {
-        $this->email = $email;
-
-        return $this;
-    }
 
     public function getRoles(): array
     {
@@ -124,7 +85,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function eraseCredentials(): void
+    public function eraseCredentials()
     {
     }
 
@@ -157,5 +118,61 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 }

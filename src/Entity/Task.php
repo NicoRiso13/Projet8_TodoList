@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -58,54 +59,6 @@ class Task
         return $this->id;
     }
 
-    public function getCreatedAt(): \Datetime
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt($createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function setTitle($title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    public function setContent($content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function setIsDone($isDone): self
-    {
-        $this->isDone = $isDone;
-
-        return $this;
-    }
-
-    public function isDone(): bool
-    {
-        return $this->isDone;
-    }
-
     public function toggle($flag): void
     {
         $this->isDone = $flag;
@@ -125,6 +78,70 @@ class Task
     public function setAuthor(iterable $author): void
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDone(): bool
+    {
+        return $this->isDone;
+    }
+
+    /**
+     * @param bool $isDone
+     */
+    public function setIsDone(bool $isDone): void
+    {
+        $this->isDone = $isDone;
     }
 
 
