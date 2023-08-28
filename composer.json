@@ -71,7 +71,8 @@
         "symfony/yaml": "5.4.*",
         "theofidry/alice-data-fixtures": "^1.3",
         "twig/extra-bundle": "*",
-        "twig/twig": "^2.13|^3.0.4"
+        "twig/twig": "^2.13|^3.0.4",
+        "ext-cassandra": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
