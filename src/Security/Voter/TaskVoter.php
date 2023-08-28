@@ -46,7 +46,7 @@ class TaskVoter extends Voter
         /** @var Task $task */
         $task = $subject;
         /** @var User $user */
-        
+
         // ... (check conditions and return true to grant permission) ...
         if ($attribute == 'TASK_DELETE') {
             return $this->canDelete($task, $user);
