@@ -21,7 +21,7 @@ class TaskVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
@@ -45,7 +45,8 @@ class TaskVoter extends Voter
 
         /** @var Task $task */
         $task = $subject;
-
+        /** @var User $user */
+        
         // ... (check conditions and return true to grant permission) ...
         if ($attribute == 'TASK_DELETE') {
             return $this->canDelete($task, $user);

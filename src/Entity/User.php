@@ -51,7 +51,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="author")
      */
-    private ArrayCollection $tasks;
+    private Collection $tasks;
 
     /**
      * @ORM\Column(type="json")
@@ -91,9 +91,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Collection
      */
-    public function getTasks(): ArrayCollection
+    public function getTasks(): Collection
     {
         return $this->tasks;
     }
