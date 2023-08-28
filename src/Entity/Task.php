@@ -60,7 +60,7 @@ class Task
     }
 
 
-    public function toggle($flag): void
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
     }
