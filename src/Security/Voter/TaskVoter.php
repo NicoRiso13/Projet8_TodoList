@@ -21,6 +21,11 @@ class TaskVoter extends Voter
         $this->security = $security;
     }
 
+    /**
+     * @param string $attribute
+     * @param $subject
+     * @return bool
+     */
     protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
