@@ -27,7 +27,7 @@ Project require:
 ## Installation
 
 #### 1 - Git clone the project
-`https://github.com/CharlotteSaury/ToDoList.git`
+`https://github.com/NicoRiso13/Projet8_TodoList.git`
 
 #### 2 - Install libraries
 `php bin/console composer install`
@@ -74,6 +74,5 @@ Please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Documentation
 
-* UML diagrams: /documentation/UML
 * Authentication guide: /documentation
 * Quality and performance audit: /documentation
