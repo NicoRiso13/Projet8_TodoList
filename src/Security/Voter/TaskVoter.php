@@ -29,6 +29,12 @@ class TaskVoter extends Voter
             && $subject instanceof \App\Entity\Task;
     }
 
+    /**
+     * @param $attribute
+     * @param $subject
+     * @param TokenInterface $token
+     * @return bool
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
