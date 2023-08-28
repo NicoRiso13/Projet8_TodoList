@@ -35,12 +35,12 @@ class TaskVoter extends Voter
     }
 
     /**
-     * @param $attribute
+     * @param string $attribute
      * @param $subject
      * @param TokenInterface $token
      * @return bool
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
@@ -59,6 +59,7 @@ class TaskVoter extends Voter
 
         return false;
     }
+
 
     /**
      * @param Task $task
