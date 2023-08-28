@@ -34,7 +34,7 @@ class UserManager
     /**
      * Handle users list recovery from database.
      *
-     * @return void
+     * @return User[]
      */
     public function handleListAction()
     {

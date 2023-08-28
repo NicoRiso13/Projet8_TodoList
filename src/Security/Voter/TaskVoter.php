@@ -21,7 +21,7 @@ class TaskVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
@@ -29,6 +29,12 @@ class TaskVoter extends Voter
             && $subject instanceof \App\Entity\Task;
     }
 
+    /**
+     * @param $attribute
+     * @param $subject
+     * @param TokenInterface $token
+     * @return bool
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -41,10 +47,8 @@ class TaskVoter extends Voter
         $task = $subject;
 
         // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case 'TASK_DELETE':
-                return $this->canDelete($task, $user);
-                break;
+        if ($attribute == 'TASK_DELETE') {
+            return $this->canDelete($task, $user);
         }
 
         return false;

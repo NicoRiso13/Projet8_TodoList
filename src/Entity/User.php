@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,14 +23,14 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      * @Assert\NotNull(message="Le champ nom d'utilisateur ne peut être null.")
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,7 +38,7 @@ class User implements UserInterface
      * @Assert\Length(min="6", max="30", groups={"registration"})
      * @Assert\NotNull(message="Le champ mot de passe ne peut être null.", groups={"registration"})
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
@@ -50,12 +51,12 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="author")
      */
-    private $tasks;
+    private ArrayCollection $tasks;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     public function __construct()
     {
@@ -63,51 +64,12 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    public function setUsername($username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
 
     public function getSalt()
     {
         return null;
     }
 
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    public function setPassword($password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
 
     public function getRoles(): array
     {
@@ -117,21 +79,21 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): User
     {
         $this->roles = $roles;
 
         return $this;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
     /**
-     * @return Collection|Task[]
+     * @return ArrayCollection
      */
-    public function getTasks(): Collection
+    public function getTasks(): ArrayCollection
     {
         return $this->tasks;
     }
@@ -157,5 +119,61 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 }
