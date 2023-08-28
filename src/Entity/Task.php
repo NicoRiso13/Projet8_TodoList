@@ -59,7 +59,11 @@ class Task
         return $this->id;
     }
 
-    public function toggle($flag): void
+    /**
+     * @param $flag
+     * @return void
+     */
+    public function toggle($flag)
     {
         $this->isDone = $flag;
     }
