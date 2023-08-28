@@ -60,6 +60,7 @@ class TaskVoter extends Voter
         return false;
     }
 
+
     /**
      * @param Task $task
      * @param User $user
