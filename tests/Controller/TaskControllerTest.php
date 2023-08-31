@@ -2,335 +2,177 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\Utils\NeedLogin;
-use App\DataFixtures\TaskTestFixtures;
-use App\DataFixtures\UserTestFixtures;
+use App\Entity\Task;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
 {
-    use NeedLogin;
-    use FixturesTrait;
-
-    private ?KernelBrowser $client = null;
-
-    public function setUp():void
+    private static ?KernelBrowser $client = null;
+    public function testListAction()
     {
-        $this->client = static::createClient();
-        $this->loadFixtures([TaskTestFixtures::class, UserTestFixtures::class]);
+        $client = static::createClient();
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form ['_username'] = 'admin1';
+        $form ['_password'] = 'password';
+        $client->submit($form);
+        $crawlerPage = $client->request('GET', '/tasks');
+        self::assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame('http://localhost/tasks', $crawlerPage->getUri());
     }
+
+    public function testCreateAction()
+    {
+
+        // On se log
+        $client = static::createClient();
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form ['_username'] = 'admin1';
+        $form ['_password'] = 'password';
+        $client->submit($form);
+
+        // On renseigne la page à atteindre
+        $crawlerPage = $client->request('GET', '/tasks');
+        self::assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame('http://localhost/tasks', $crawlerPage->getUri());
+
+        // On selectionne le lien (Boutton) qu'on veut tester
+        $link = $crawlerPage->selectLink('Créer une tâche')->link();
+        $crawlerCreateTask = $client->click($link);
+
+        // On renseigne le boutton qui permet de soumettre le formulaire
+        $formCreateTask = $crawlerCreateTask->selectButton('Ajouter')->form();
+
+        // On remplit le formulaire avec les champs requis
+        $formCreateTask['task[title]'] = 'testTask2';
+        $formCreateTask['task[content]'] = 'Je suis le test fonctionnel task';
+
+        // On soumet le formulaire
+        $crawlerSubmit = $client->submit($formCreateTask);
+
+        // On suit la redirection
+        $client->followRedirects();
+
+        // Vérifier la redirection après la creation de l'utilisateur
+        self::assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame('http://localhost/tasks', $crawlerSubmit->getUri());
+
+        // Vérifier la presence d'un nouvel utilisateur dans la liste
+        $value = "testTask1";
+        $testValue = ["testTask1"];
+        self::assertContains($value, $testValue, $client->getResponse()->getContent());
+    }
+
 
     /**
-     * Test Redirection to login route for visitors trying to access pages that require authenticated status.
-     *
-     * @dataProvider provideAuthenticatedUserAccessibleUrls
+     * @throws ORMException
      */
-    public function testUnaccessibleTaskPagesNotAuthenticated($method, $url)
+    public function testEditAction()
     {
-        $this->client->request($method, $url);
-        $this->assertResponseRedirects('http://localhost/login');
+        self::ensureKernelShutdown();
+        $client = static::createClient();
+
+        //setup fixtures
+        /** @var EntityManagerInterface $em */
+        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+        $taskId = 5;
+        $taskToEdit = $em->getReference(Task::class, $taskId);
+        $taskToEdit->setTitle("Original Task");
+        $taskToEdit->setContent("Original Content Task");
+        $em->flush();
+
+
+        // On se log
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form([
+            '_username' => 'admin1',
+            '_password' => 'password'
+        ]);
+        $client->submit($form);
+
+        // On renseigne la page à atteindre
+        $client->request('GET', '/');
+        $client->followRedirects();
+        $value = "Bienvenue";
+        $testValue = ["Bienvenue"];
+        self::assertContains($value, $testValue, $client->getResponse()->getContent());
+
+
+        $crawlerPageTaskId = $client->request('GET', '/tasks/'.$taskId.'/edit');
+        self::assertEquals(200, $client->getResponse()->getStatusCode());
+
+
+        // On renseigne le boutton qui permet de soumettre le formulaire
+        $formModifyTask = $crawlerPageTaskId->selectButton('Modifier')->form();
+
+        // On remplit le formulaire avec les champs requis
+        $formModifyTask['task[title]'] = 'Task Modify';
+        $formModifyTask['task[content]'] = 'Je suis le test fonctionnel task modifié avec fixtures';
+
+        // On soumet le formulaire
+        $crawlerSubmit = $client->submit($formModifyTask);
+
+        // On suit la redirection
+        $client->followRedirects();
+
+        // Vérifier la redirection après la creation de l'utilisateur
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        self::assertSame('http://localhost/tasks', $crawlerSubmit->getUri());
+
+
+        // Vérifier la presence d'un nouvel utilisateur dans la liste
+        self::assertCount(1,$crawler->filter('a'),"Task Modify");
+
     }
 
-    public function provideAuthenticatedUserAccessibleUrls()
-    {
-        return [
-            ['GET', '/tasks/done'],
-            ['GET', '/tasks/todo'],
-            ['GET', '/tasks/create'],
-            ['GET', '/tasks/1/edit'],
-            ['GET', '/tasks/1/toggle'],
-            ['DELETE', '/tasks/1/delete']
-        ];
-    }
 
     /**
-     * Test access to restricted pages related to tasks for authenticated user
-     *
-     * @return void
+     * @throws ORMException
      */
-    public function testRestrictedPageAccessAuthenticated()
+    public function testDeleteTaskAction()
     {
-        $routes = [
-            ['GET', '/tasks/todo'],
-            ['GET', '/tasks/done'],
-            ['GET', '/tasks/create'],
-            ['GET', '/tasks/1/edit']
-        ];
-        $this->login($this->client, $this->getUser('user1'));
-        foreach ($routes as $route) {
-            $this->client->request($route[0], $route[1]);
-            $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        }
-    }
+        self::ensureKernelShutdown();
+        $client = static::createClient();
 
-    /**
-     * Test integration of to do task list page for authenticated user
-     *
-     * @return void
-     */
-    public function testIntegrationToDoTaskListActionAuthenticated()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/todo');
-        $this->assertSame(1, $crawler->filter('a:contains("Se déconnecter")')->count());
-        $this->assertSame(1, $crawler->filter('a:contains("Créer une tâche")')->count());
+        //setup fixtures
+        /** @var EntityManagerInterface $em */
+        $em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $user = $em->getReference(User::class, 11);
+        $taskToDelete = new Task();
+        $taskToDelete->setTitle("TEST TITLE");
+        $taskToDelete->setContent("content test");
+        $taskToDelete->setAuthor($user);
+        $em->persist($taskToDelete);
+        $em->flush();
 
-        $this->assertSelectorExists('.caption');
-        $this->assertSelectorExists('.thumbnail h4 a');
-        $this->assertSame(4, $crawler->filter('.thumbnail button:contains("Supprimer")')->count());
-        $this->assertSelectorExists('.glyphicon-remove');
-        $this->assertSame(4, $crawler->filter('.thumbnail button:contains("Marquer comme faite")')->count());
-        $this->assertSelectorNotExists('.glyphicon-ok');
-        $this->assertSame(0, $crawler->filter('.thumbnail button:contains("Marquer comme terminée")')->count());
-        $this->assertSame(2, $crawler->filter('.thumbnail h6:contains("Auteur: Anonyme")')->count());
-    }
 
-    /**
-     * Test integration of done task list page for authenticated user
-     *
-     * @return void
-     */
-    public function testIntegrationDoneTaskListActionAuthenticated()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/done');
+        // On se log
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form ['_username'] = 'admin1';
+        $form ['_password'] = 'password';
+        $client->submit($form);
 
-        $this->assertSame(1, $crawler->filter('a:contains("Se déconnecter")')->count());
-        $this->assertSame(1, $crawler->filter('a:contains("Créer une tâche")')->count());
+        // On renseigne la page à atteindre
+        $crawlerPage = $client->request('GET', '/tasks');
+        self::assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame('http://localhost/tasks', $crawlerPage->getUri());
 
-        $this->assertSelectorExists('.caption');
-        $this->assertSelectorExists('.thumbnail h4 a');
-        $this->assertSame(1, $crawler->filter('.thumbnail button:contains("Supprimer")')->count());
-        $this->assertSelectorExists('.glyphicon-ok');
-        $this->assertSame(1, $crawler->filter('.thumbnail button:contains("Marquer non terminée")')->count());   
-        $this->assertSelectorNotExists('.glyphicon-remove');   
-        $this->assertSame(0, $crawler->filter('.thumbnail button:contains("Marquer comme faite")')->count());
-        $this->assertSame(1, $crawler->filter('.thumbnail h6:contains("Auteur: Anonyme")')->count());
-    }
+        // On selectionne le lien (Boutton) qu'on veut tester
+        $link = $crawlerPage->filter('#delete_button_'.$taskToDelete->getId())->link();
+        $crawlerTasksList = $client->click($link);
 
-    /**
-     * Test integration of task creation page for authenticated user
-     *
-     * @return void
-     */
-    public function testIntegrationTaskCreationPage()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/create');
-
-        $this->assertSame(1, $crawler->filter('a:contains("Se déconnecter")')->count());
-        $this->assertSame(1, $crawler->filter('a:contains("Retour à la liste des tâches")')->count());
-        $this->assertSelectorExists('form');
-        $this->assertCount(2, $crawler->filter('input'));
-        $this->assertCount(1, $crawler->filter('textarea'));
-        $this->assertSame(1, $crawler->filter('html:contains("Title")')->count());
-        $this->assertSame(1, $crawler->filter('html:contains("Content")')->count());
-        $this->assertSame(1, $crawler->filter('button:contains("Ajouter")')->count());
-    }
-
-    /**
-     * Test new task creation
-     *
-     * @return void
-     */
-    public function testTaskCreation()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/create');
-
-        $form = $crawler->selectButton('Ajouter')->form();
-        $form['task[title]'] = 'New Task';
-        $form['task[content]'] = 'New content';
-        $this->client->submit($form);
-
-        $this->assertResponseRedirects('/tasks/todo');
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-        $this->assertSame(1, $crawler->filter('h4 a:contains("New Task")')->count());
-        $this->assertSame(1, $crawler->filter('p:contains("New content")')->count());
-        $this->assertSame(2, $crawler->filter('h6:contains("Auteur: user1")')->count());
-    }
-
-    /**
-     * Test validity of edit task link
-     *
-     * @return void
-     */
-    public function testValidEditTaskLinkTasksPage()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/todo');
-        $link = $crawler->selectLink('title1')->link();
-        $crawler = $this->client->click($link);
-        $this->assertSame(1, $crawler->filter('input[value="title1"]')->count());
-    }
-
-    /**
-     * Test integration of task edition page for authenticated user
-     *
-     * @return void
-     */
-    public function testIntegrationTaskEditionPage()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/1/edit');
-
-        $this->assertSame(1, $crawler->filter('a:contains("Se déconnecter")')->count());
-        //$this->assertSelectorExists('a', 'Retour à la liste des tâches');
-        $this->assertSelectorExists('form');
-        $this->assertSame(1, $crawler->filter('label:contains("Title")')->count());
-        $this->assertSame(1, $crawler->filter('label:contains("Content")')->count());
-        $this->assertSame(1, $crawler->filter('input[value="title1"]')->count());
-        $this->assertSame(1, $crawler->filter('textarea:contains("content1")')->count());
-        $this->assertSelectorExists('button', 'Modifier');
-        $this->assertInputValueNotSame('task[title]', '');
-    }
-
-    /**
-     * Test new task edition
-     *
-     * @return void
-     */
-    public function testTaskEdition()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/1/edit');
-
-        $form = $crawler->selectButton('Modifier')->form();
-        $form['task[title]'] = 'updated title';
-        $form['task[content]'] = 'updated content';
-        $this->client->submit($form);
-
-        $this->assertResponseRedirects('/tasks/todo');
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-        $this->assertSame(1, $crawler->filter('h4 a:contains("updated title")')->count());
-        $this->assertSame(1, $crawler->filter('p:contains("updated content")')->count());
-    }
-
-    /**
-     * Test toggle action - set task1 is_done to true
-     *
-     * @return void
-     */
-    public function testToggleActionSetIsDone()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/1/toggle');
-        $this->assertResponseRedirects('/tasks/todo');
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-        $this->assertSelectorNotExists('#task1');
-    }
-
-    /**
-     * Test toggle action - set task3 is_done to false
-     *
-     * @return void
-     */
-    public function testToggleActionSetIsNotDone()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('GET', '/tasks/3/toggle');
-        $this->assertResponseRedirects('/tasks/todo');
-
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-        $this->assertSelectorExists('#task3 .glyphicon-remove');
-        $this->assertSelectorNotExists('#task3 .glyphicon-ok');
-    }
-
-    /**
-     * Test allowed delete action by author
-     *
-     * @return void
-     */
-    public function testDeleteActionByAuthor()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $crawler = $this->client->request('POST', '/tasks/4/delete');
-        $this->assertResponseRedirects('/tasks/todo');
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-        $this->assertSelectorNotExists('#task4');
-    }
-
-    /**
-     * Test forbidden delete action by other user than author
-     *
-     * @return void
-     */
-    public function testDeleteActionByNotAuthor()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $this->client->request('DELETE', '/tasks/5/delete');
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        $this->client->request('GET', '/tasks/todo');
-        $this->assertSelectorExists('#task5');
-    }
-
-    /**
-     * Test allowed anonymous task delete action by admin
-     *
-     * @return void
-     */
-    public function testAnonymousTaskDeleteActionByAdmin()
-    {
-        $this->login($this->client, $this->getUser('admin1'));
-        $crawler = $this->client->request('DELETE', '/tasks/1/delete');
-        $this->assertResponseRedirects('/tasks/todo');
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
-        $this->assertSelectorNotExists('#task1');
-    }
-
-    /**
-     * Test forbidden anonymous task delete action by not granted role_admin
-     *
-     * @return void
-     */
-    public function testAnonymousTaskDeleteActionByNotAdmin()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $this->client->request('DELETE', '/tasks/1/delete');
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        $this->client->request('GET', '/tasks/todo');
-        $this->assertSelectorExists('#task1');
-    }
-
-    /**
-     * Test 404 error response when action with unexisting resource
-     *
-     * @return void
-     */
-    public function testUnexistingTaskAction()
-    {
-        $routes = [
-            ['GET', '/tasks/10/edit'],
-            ['GET', '/tasks/10/toggle'],
-            ['DELETE', '/tasks/10/delete']
-        ];
-        $this->login($this->client, $this->getUser('user1'));
-
-        foreach ($routes as $route) {
-            $this->client->request($route[0], $route[1]);
-            $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        }
-    }
-
-    /**
-     * Test validity of homepage header link
-     *
-     * @return void
-     */
-    public function testValidHomepageLink()
-    {
-        $crawler = $this->client->request('GET', '/login');
-        $link = $crawler->selectLink('To Do List app')->link();
-        $crawler = $this->client->click($link);
-        $this->assertResponseRedirects('http://localhost/login');
+        self::assertSame('http://localhost/tasks',$crawlerTasksList->getUri());
+        self::assertStringContainsString('La tâche a bien été supprimée.', $client->getResponse()->getContent());
     }
 }

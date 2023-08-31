@@ -43,7 +43,7 @@ class TaskVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        // if the user is anonymous, do not grant access
+        // si l'utilisateur est anonyme, n'accordez pas l'accès
         if (!$user instanceof UserInterface) {
             return false;
         }
@@ -52,7 +52,7 @@ class TaskVoter extends Voter
         $task = $subject;
         /** @var User $user */
 
-        // ... (check conditions and return true to grant permission) ...
+        // vérifier les conditions et renvoyer true pour accorder l'autorisation)
         if ($attribute == 'TASK_DELETE') {
             return $this->canDelete($task, $user);
         }

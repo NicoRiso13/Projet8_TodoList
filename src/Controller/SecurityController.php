@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+
 class SecurityController extends AbstractController
 {
     /**
-     * Handle user authentication with login form.
+     * Gérer l'authentification des utilisateurs avec le formulaire de connexion.
      *
      * @Route("/login", name="login")
      *
@@ -28,14 +30,14 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Handle lougout action.
+     * Gérer l'action de la déconnexion.
      *
      * @Route("/logout", name="logout")
      *
      * @return Response
      */
-    public function logout()
+    public function logout(): Response
     {
-        // This code is never executed.
+        return $this->logout();
     }
 }

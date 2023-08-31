@@ -6,22 +6,21 @@ use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserTestFixtures extends Fixture
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private UserPasswordEncoderInterface $encoder;
+    private UserPasswordHasherInterface $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
     }
 
     /**
-     * Load user fixtures to database.
      *
      * @param ObjectManager $manager
      *
@@ -31,21 +30,21 @@ class UserTestFixtures extends Fixture
     {
         for ($i = 1; $i <= 2; ++$i) {
             $user = new User();
-            $user->setEmail('user'.$i.'@email.com')
-                ->setUsername('user'.$i)
-                ->setPassword($this->encoder->encodePassword($user, 'password'));
+            $user->setEmail('user' . $i . '@email.com');
+            $user->setUsername('user' . $i);
+            $user->setPassword($this->encoder->hashPassword($user, 'password'));
             $manager->persist($user);
-            $this->addReference('user'.$i, $user);
+            $this->addReference('user' . $i, $user);
         }
 
         $admin = new User();
-        $admin->setEmail('admin1@email.com')
-            ->setUsername('admin1')
-            ->setPassword($this->encoder->encodePassword($user, 'password'))
-            ->setRoles(['ROLE_ADMIN']);
+        $admin->setEmail('admin1@email.com');
+        $admin->setUsername('admin1');
+        $admin->setPassword($this->encoder->hashPassword($admin, 'password'));
+        $admin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($admin);
-        $this->addReference('admin'.$i, $admin);
+        $this->addReference('admin' . $i, $admin);
 
         $manager->flush();
     }

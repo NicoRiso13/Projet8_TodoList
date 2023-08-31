@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 class TaskFixtures extends Fixture
 {
     /**
-     * Load task fixtures.
+     * charger les fictures des tâches.
      *
      * @param ObjectManager $manager
      *
@@ -21,8 +21,8 @@ class TaskFixtures extends Fixture
 
         for ($i = 1; $i <= 10; ++$i) {
             $task = new Task();
-            $task->setTitle('tache '.$i)
-                ->setContent($faker->text(mt_rand(50, 150)));
+            $task->setTitle('tache ' . $i);
+            $task->setContent($faker->text(mt_rand(50, 150)));
             if ($i > 5) {
                 $task->setIsDone(true);
             }

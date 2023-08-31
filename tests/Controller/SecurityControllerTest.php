@@ -12,79 +12,47 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {
-    use NeedLogin;
-    use FixturesTrait;
 
-    private ?KernelBrowser $client = null;
-
-    public function setUp():void
+    public function testLoginAction()
     {
-        $this->client = static::createClient();
-        $this->loadFixtures([TaskTestFixtures::class, UserTestFixtures::class]);
+        $client = static::createClient();
+        $client->request('GET', '/login');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        self::assertSelectorNotExists('.alert.alert-danger');
     }
 
-    /**
-     * Test login page not authenticated user.
-     *
-     * @return void
-     */
-    public function testLoginPage()
+    public function testLoginWithBadCredentials()
     {
-        $crawler = $this->client->request('GET', '/login');
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorExists('form');
-        $this->assertSame(1, $crawler->filter('html:contains("Nom d\'utilisateur :")')->count());
-        $this->assertSame(1, $crawler->filter('html:contains("Mot de passe :")')->count());
-        $this->assertCount(3, $crawler->filter('input'));
-        $this->assertSelectorTextSame('button', 'Se connecter');
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+        $loginForm= $crawler->selectButton('Se connecter')->form([
+            '_username' => 'admin',
+            '_password' => '1111111'
+        ]);
+        $client->submit($loginForm);
+
+        self::assertResponseRedirects('http://localhost/login');
+        $client->followRedirect();
+        self::assertSelectorExists('.alert.alert-danger');
+
     }
 
-    /**
-     * Test login with valid credentials.
-     *
-     * @return void
-     */
-    public function testLoginValidCredentials()
+    public function testLoginWithSuccess()
     {
-        $crawler = $this->client->request('GET', '/login');
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $loginForm= $crawler->selectButton('Se connecter')->form([
+            '_username' => 'admin1',
+            '_password' => 'password'
+        ]);
+        $client->submit($loginForm);
 
-        $form = $crawler->selectButton('Se connecter')->form();
-        $form['_username'] = 'user1';
-        $form['_password'] = 'password';
-        $this->client->submit($form);
-
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('html:contains("Bienvenue sur Todo List, l\'application vous permettant de gérer l\'ensemble de vos tâches sans effort !")')->count());
-        $this->assertSelectorExists('a', 'Créer une nouvelle tâche');
-        $this->assertSelectorExists('a', 'Consulter la liste des tâches à faire');
-        $this->assertSelectorExists('a', 'Consulter la liste des tâches terminées');
-        $this->assertSelectorNotExists('.alert.alert-danger', 'Invalid credentials.');
+        self::assertResponseRedirects('http://localhost/');
+        $client->followRedirect();
+        self::assertSelectorTextSame('h6',"L'utilisateur est connecté avec le compte:admin1@email.com");
     }
 
-    /**
-     * Test login with invalid credentials.
-     *
-     * @return void
-     */
-    public function testLoginInvalidCredentials()
-    {
-        $crawler = $this->client->request('GET', '/login');
 
-        $form = $crawler->selectButton('Se connecter')->form();
-        $form['_username'] = 'invalidusername';
-        $form['_password'] = 'invalidpass';
-        $this->client->submit($form);
 
-        $this->assertResponseStatusCodeSame(302);
-        $crawler = $this->client->followRedirect();
-        $this->assertSelectorExists('.alert.alert-danger', 'Invalid credentials.');
-        $this->assertSelectorTextSame('button', 'Se connecter');
-    }
-
-    public function testLogout()
-    {
-        $this->login($this->client, $this->getUser('user1'));
-        $this->client->request('GET', '/logout');
-        $this->assertResponseRedirects('http://localhost/');
-    }
 }

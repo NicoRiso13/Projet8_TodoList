@@ -10,18 +10,18 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 class TaskTestFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * Load task test fixtures.
+     * charger les fixtures des tâches pour les tests.
      *
      * @param ObjectManager $manager
      *
      * @return void
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 5; ++$i) {
             $task = new Task();
-            $task->setTitle('title'.$i)
-                ->setContent('content'.$i);
+            $task->setTitle('title'.$i);
+            $task->setContent('content'.$i);
             if ($i == 3) {
                 $task->setIsDone(true);
             }
