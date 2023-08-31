@@ -92,10 +92,11 @@ class Task
 
     /**
      * @param string $title
+     * @return string
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): string
     {
-        $this->title = $title;
+        return $this->title = $title;
     }
 
     /**
@@ -108,10 +109,11 @@ class Task
 
     /**
      * @param string $content
+     * @return string
      */
-    public function setContent(string $content): void
+    public function setContent(string $content): string
     {
-        $this->content = $content;
+        return $this->content = $content;
     }
 
     /**
@@ -130,10 +132,8 @@ class Task
         $this->isDone = $isDone;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAuthor()
+
+    public function getAuthor(): User
     {
         return $this->author;
     }

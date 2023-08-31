@@ -3,98 +3,119 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use App\Manager\TaskManager;
+use App\Repository\TaskRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+
 
 class TaskController extends AbstractController
 {
-    /**
-     * @var TaskManager
-     */
-    private $taskManager;
 
-    public function __construct(TaskManager $taskManager)
+
+    private TaskManager $taskManager;
+    private EntityManagerInterface $entityManager;
+    private Security $security;
+
+
+    public function __construct(TaskManager $taskManager, EntityManagerInterface $entityManager, Security $security)
     {
+
         $this->taskManager = $taskManager;
+        $this->entityManager = $entityManager;
+
+        $this->security = $security;
     }
 
     /**
-     * Manage to do task list display.
+     * Gérer l'affichage de la liste des tâches.
      *
-     * @Route("/tasks/todo", name="task_todo_list")
-     *
-     * @return Response
+     * @Route("/tasks", name="task_list")
      */
-    public function listAction()
+    public function listAction(TaskRepository $taskRepository): Response
     {
+        /** @var User $user */
+
         return $this->render('task/list.html.twig', [
-            'tasks' => $this->taskManager->handleListAction(),
+                'tasks' => $taskRepository->findAll(),
+
+
             ]
         );
     }
 
     /**
-     * Manage done task list display.
+     * Gérer l'affichage de la liste des tâches terminées.
      *
      * @Route("/tasks/done", name="task_done_list")
      *
      * @return Response
      */
-    public function doneListAction()
+    public function doneListAction(TaskRepository $taskRepository)
     {
-        return $this->render('task/list.html.twig', [
-            'tasks' => $this->taskManager->handleListAction(true),
-            'type' => 'done',
+        return $this->render('task/listDone.html.twig', [
+                'tasks' => $taskRepository->findAll(),
+
             ]
         );
     }
 
     /**
-     * Manage new task creation.
+     * Gérer la création de nouvelles tâches.
      *
      * @Route("/tasks/create", name="task_create")
      *
+     * @param Request $request
+     * @param TaskManager $taskManager
      * @return Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, TaskManager $taskManager): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->taskManager->handleCreateOrUpdate($task);
+
+
+            $task->setAuthor($this->security->getUser());
+            $taskManager->createTask($task);
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
-            return $this->redirectToRoute('task_todo_list');
+            return $this->redirectToRoute('task_list');
         }
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * Manage existing task edition.
+     * Gérer l'édition de tâches existante.
      *
      * @Route("/tasks/{id}/edit", name="task_edit")
      *
+     * @param Task $task
+     * @param Request $request
      * @return Response
      */
-    public function editAction(Task $task, Request $request)
+    public function editAction(Task $task, Request $request): Response
     {
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->taskManager->handleCreateOrUpdate();
+            $this->taskManager->updateTask();
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_todo_list');
+            return $this->redirectToRoute('task_list');
         }
 
         return $this->render('task/edit.html.twig', [
@@ -104,34 +125,49 @@ class TaskController extends AbstractController
     }
 
     /**
-     * Manage task status modification (done/todo).
+     * Gérer la modification du statut des tâches.
      *
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      *
+     * @param Task $task
      * @return Response
      */
-    public function toggleTaskAction(Task $task)
+    public function toggleTaskAction(Task $task): Response
     {
         $task = $this->taskManager->handleToggleAction($task);
         $status = $task->isDone() ? 'faite' : 'non terminée';
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme '.$status, $task->getTitle()));
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme ' . $status, $task->getTitle()));
 
-        return $this->redirectToRoute('task_todo_list');
+        return $this->redirectToRoute('task_list');
     }
 
     /**
-     * Manage task deletion restricted to task author or admin for anonymous tasks.
-     *
+     * Gérer la suppression de tâches limitée à l'auteur ou à l'administrateur de la tâche pour les tâches anonymes.
+     * @param Task $task
+     * @param TaskManager $taskManager
+     * @return Response
      * @Route("/tasks/{id}/delete", name="task_delete")
      * @IsGranted("TASK_DELETE", subject="task", statusCode=401)
-     *
-     * @return Response
      */
-    public function deleteTaskAction(Task $task)
+    public function deleteTaskAction(Task $task, TaskManager $taskManager): Response
     {
-        $this->taskManager->handleDeleteAction($task);
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        $user = $this->getUser();
 
-        return $this->redirectToRoute('task_todo_list');
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+        $userId = $user->getId();
+
+        $taskUserId = $task->getAuthor() !== null ? $task->getAuthor()->getId() : null;
+        if ($taskUserId === $userId || ($taskUserId === null && $this->isGranted('ROLE_ADMIN'))) {
+
+            $taskManager->deleteTask($task);
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+        } else {
+            $this->addFlash('error', 'Vous n\'avez pas les droits necessaire pour supprimer cette tache.');
+        }
+
+        return $this->redirectToRoute('task_list');
     }
 }

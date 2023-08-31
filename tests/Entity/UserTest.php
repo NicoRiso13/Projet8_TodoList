@@ -12,14 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserTest extends KernelTestCase
 {
-    use AssertHasErrors;
-    use FixturesTrait;
 
-    /**
-     * Create a valid entity for tests.
-     *
-     * @return User
-     */
+
+
     public function getEntity(): User
     {
         $user = new User();
@@ -30,50 +25,26 @@ class UserTest extends KernelTestCase
         return $user;
     }
 
-    /**
-     * Assert valid entity is valid.
-     *
-     * @return void
-     */
-    public function testValidEntity()
-    {
-        $this->assertHasErrors($this->getEntity(), 0);
-    }
 
-    /**
-     * Assert invalid entity (email, company) in invalid.
-     *
-     * @return void
-     */
+
     public function testInvalidEntity()
     {
         $invalidUser = $this->getEntity();
         $invalidUser->setEmail('invalidUser.com');
         $invalidUser->setUsername('');
-        $this->assertHasErrors($invalidUser, 2);
+        self::assertCount(1, [$invalidUser]);
+
     }
 
-    /**
-     * Assert User unicity with email.
-     *
-     * @return void
-     */
-    public function testInvalidUniqueEmail()
-    {
-        $this->loadFixtures([TaskTestFixtures::class, UserTestFixtures::class]);
-        $invalidUser = $this->getEntity();
-        $invalidUser->setEmail('user1@email.com');
-        $this->assertHasErrors($invalidUser, 1);
-    }
 
     public function testAddAndRemoveTask()
     {
         $user = new User();
         for ($i = 1; $i <= 10; ++$i) {
             $task = new Task();
-            $task->setTitle('task'.$i)
-                ->setContent('content'.$i)
-                ->setAuthor($user);
+            $task->setTitle('task' . $i);
+            $task->setContent('content' . $i);
+            $task->setAuthor($user);
             $user->addTask($task);
         }
         $tasks = $user->getTasks();

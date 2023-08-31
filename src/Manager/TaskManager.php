@@ -5,34 +5,21 @@ namespace App\Manager;
 use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
+
 
 class TaskManager
 {
-    /**
-     * @var TaskRepository
-     */
-    private $taskRepository;
+    private EntityManagerInterface $entityManager;
+    private TaskRepository $taskRepository;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 
-    /**
-     * @var Security
-     */
-    private $security;
-
-    public function __construct(TaskRepository $taskRepository, EntityManagerInterface $entityManager, Security $security)
+    public function __construct(TaskRepository $taskRepository,EntityManagerInterface $entityManager)
     {
-        $this->taskRepository = $taskRepository;
         $this->entityManager = $entityManager;
-        $this->security = $security;
+        $this->taskRepository = $taskRepository;
     }
-
     /**
-     * Handle task list recovery from database.
+     * Gérer la récupération de la liste des tâches à partir de la base de données.
      *
      * @param bool $isDone
      *
@@ -44,13 +31,13 @@ class TaskManager
     }
 
     /**
-     * Handle task status modification.
+     * Gérer la modification du statut des tâches.
      *
      * @param Task $task
      *
      * @return Task $task
      */
-    public function handleToggleAction(Task $task)
+    public function handleToggleAction(Task $task): Task
     {
         $task->toggle(!$task->isDone());
         $this->entityManager->flush();
@@ -58,32 +45,25 @@ class TaskManager
         return $task;
     }
 
-    /**
-     * Handle task creation or edition in database.
-     *
-     * @param Task $task
-     *
-     * @return void
-     */
-    public function handleCreateOrUpdate(Task $task = null)
+    public function createTask(Task $task): void
     {
-        if (null !== $task) {
-            $task->setAuthor($this->security->getUser());
-            $this->entityManager->persist($task);
-        }
+
+        $this->entityManager->persist($task);
         $this->entityManager->flush();
     }
 
-    /**
-     * Handle task deletion in database.
-     *
-     * @param Task $task
-     *
-     * @return void
-     */
-    public function handleDeleteAction(Task $task)
+    public function updateTask(): void
+    {
+        $this->entityManager->flush();
+    }
+
+    public function deleteTask(Task $task): void
     {
         $this->entityManager->remove($task);
         $this->entityManager->flush();
+
     }
+
+
+
 }

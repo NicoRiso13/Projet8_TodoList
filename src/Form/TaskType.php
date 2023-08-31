@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class TaskType extends AbstractType
 {
     /**
-     * Create form related to Task class.
+     * Créer un formulaire lié à la classe de tâches.
      *
      * @param FormBuilderInterface $builder
      * @param array                $options

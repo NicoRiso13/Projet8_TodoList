@@ -5,22 +5,22 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private UserPasswordEncoderInterface $encoder;
+    private UserPasswordHasherInterface $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
     }
 
     /**
-     * Load user fixtures to database.
      *
      * @param ObjectManager $manager
      *
@@ -29,19 +29,20 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 10; ++$i) {
+
             $user = new User();
-            $user->setEmail('user'.$i.'@email.com')
-                ->setUsername('user'.$i)
-                ->setPassword($this->encoder->encodePassword($user, 'password'));
+            $user->setEmail('user' . $i . '@email.com');
+            $user->setUsername('user'. $i);
+            $user->setPassword($this->encoder->hashPassword($user, 'password'));
 
             $manager->persist($user);
         }
 
         $admin = new User();
-        $admin->setEmail('admin1@email.com')
-            ->setUsername('admin1')
-            ->setPassword($this->encoder->encodePassword($user, 'password'))
-            ->setRoles(['ROLE_ADMIN']);
+        $admin->setEmail('admin1@email.com');
+            $admin->setUsername('admin1');
+            $admin->setPassword($this->encoder->hashPassword($user, 'password'));
+            $admin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($admin);
 

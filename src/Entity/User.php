@@ -91,7 +91,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return ArrayCollection|Collection
+     * @return Collection<Task>
      */
     public function getTasks(): Collection
     {

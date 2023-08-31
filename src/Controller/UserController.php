@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Manager\UserManager;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,19 +24,20 @@ class UserController extends AbstractController
     }
 
     /**
-     * Manage users list display restricted to admin.
+     * Gérer l'affichage de la liste des utilisateurs réservé à l'administrateur.
      *
      * @Route("/users", name="user_list")
      *
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function listAction(): Response
+    public function listAction(UserRepository $userRepository): Response
     {
-        return $this->render('user/list.html.twig', ['users' => $this->userManager->handleListAction()]);
+        return $this->render('user/list.html.twig', ['users' => $userRepository->findAll()]);
     }
 
     /**
-     * Manage new user creation.
+     * Gérer la création de nouveaux utilisateurs.
      *
      * @Route("/users/create", name="user_create")
      *
@@ -51,7 +53,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userManager->handleCreateOrUpdate($user);
+            $this->userManager->createUser($user);
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
             return $this->redirectToRoute('user_list');
@@ -61,22 +63,23 @@ class UserController extends AbstractController
     }
 
     /**
-     * Manage existing user edition.
+     * Gérer la modifications des utilisateurs.
      *
      * @Route("/users/{id}/edit", name="user_edit")
-     *
-     * @return Response
      */
-    public function editAction(User $user, Request $request)
+    public function editAction(User $user, Request $request, UserManager $userManager): Response
     {
-        $form = $this->createForm(UserType::class, $user, [
-            'require_password' => false,
-        ]);
-        $password = $user->getPassword();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
+        $form = $this->createForm(UserType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userManager->handleCreateOrUpdate($user, false, $password);
+
+
+            $userManager->updateUser($user);
+
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
             return $this->redirectToRoute('user_list');
