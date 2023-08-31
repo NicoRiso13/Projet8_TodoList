@@ -133,7 +133,7 @@ class Task
     }
 
 
-    public function getAuthor()
+    public function getAuthor(): User
     {
         return $this->author;
     }

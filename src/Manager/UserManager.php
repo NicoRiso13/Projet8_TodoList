@@ -21,7 +21,7 @@ class UserManager
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function createUser(User $user)
+    public function createUser(User $user): void
     {
         $password = $this->passwordEncoder->hashPassword($user, $user->getPassword());
         $user->setPassword($password);
@@ -29,7 +29,7 @@ class UserManager
         $this->entityManager->flush();
     }
 
-    public function updateUser(User $user)
+    public function updateUser(User $user): void
     {
         $password = $this->passwordEncoder->hashPassword($user, $user->getPassword());
         $user->setPassword($password);

@@ -67,7 +67,7 @@ class UserController extends AbstractController
      *
      * @Route("/users/{id}/edit", name="user_edit")
      */
-    public function editAction(User $user, Request $request, UserManager $userManager)
+    public function editAction(User $user, Request $request, UserManager $userManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 

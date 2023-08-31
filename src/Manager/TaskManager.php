@@ -45,19 +45,19 @@ class TaskManager
         return $task;
     }
 
-    public function createTask(Task $task)
+    public function createTask(Task $task): void
     {
 
         $this->entityManager->persist($task);
         $this->entityManager->flush();
     }
 
-    public function updateTask()
+    public function updateTask(): void
     {
         $this->entityManager->flush();
     }
 
-    public function deleteTask(Task $task)
+    public function deleteTask(Task $task): void
     {
         $this->entityManager->remove($task);
         $this->entityManager->flush();
