@@ -133,7 +133,7 @@ class Task
         $this->isDone = $isDone;
     }
 
-    public function getAuthor(): Author
+    public function getAuthor()
     {
         return $this->author;
     }
