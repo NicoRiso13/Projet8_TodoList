@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -132,7 +133,7 @@ class Task
         $this->isDone = $isDone;
     }
 
-    public function getAuthor()
+    public function getAuthor(): Author
     {
         return $this->author;
     }
