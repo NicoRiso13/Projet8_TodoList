@@ -1,31 +1,22 @@
 ## Description
 
-ToDo & Co is a new startup developping an application to manage life daily tasks. However, application has been developped very quickly to make demonstration to potential investors, as minimum viable product.
-This project aims to implement new functionnalities, fix few anomalies and improve application quality.
-Among them:
-    - Improve performance and quality of outdated application
-    - Implement relation between task and user
-    - Add user role managment 
-    - Implement authorizations restrictions
-    - Implement unit and funcionnal tests to obtain a test-coverage > 70%
-    - Generate quality and performance audit after app improvment
-    - Suggest an improvment plan for further development
+ToDo & Co est une nouvelle startup développant une application pour gérer les tâches de la vie quotidienne. Cependant, une application a été développée très rapidement pour faire la démonstration aux investisseurs potentiels, en tant que produit minimum viable. Ce projet vise à implémenter de nouvelles fonctionnalités, corriger quelques anomalies et améliorer la qualité des applications. Parmi eux : - Améliorer les performances et la qualité des applications obsolètes - Implémenter la relation entre la tâche et l'utilisateur - Ajouter la gestion des rôles des utilisateurs - Implémenter des restrictions d'autorisations - Implémenter des tests unitaires et fonctionnels pour obtenir une couverture des tests > 70% - Générer un audit de qualité et de performance après l'application amélioration - Suggérer un plan d'amélioration pour un développement ultérieurt
 
 ## Environment : Symfony 5 project
 
-Project require:
+Requierement:
 * [Composer]("https://getcomposer.org/")
 * PHP 7.4
 
 ## Installation
 
-#### 1 - Git clone the project
+#### 1 - Cloner le projet Git
 `https://github.com/NicoRiso13/Projet8_TodoList.git`
 
-#### 2 - Install libraries
+#### 2 - Installer les librairies
 `php bin/console composer install`
 
-#### 3 - Create database
+#### 3 - Créer la base de données
 * a) Update DATABASE_URL .env file with your database configuration.
     `DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name`
 * b) Create database: 
@@ -35,34 +26,28 @@ Project require:
 * d) Insert fictive data
     `php bin/console doctrine:fixtures:load --group=UserFixtures --group=TaskFixtures`
 
-#### 4 - Start server
+#### 4 - démarrer le serveur
 `symfony serve -d`
 
-#### 5 - Open ToDoList app
+#### 5 - Ouvrir l'application ToDoList
 `symfony open:local`
 
-## Usage
+## Utilisation
 
-You can now use this app.
-If you generated fixtures, here are the users you can use:
 * User: username: "user1" - password: "password"
 * Administrator: Nom d'utilisateur: "admin1" - Mot de passe: "password"
 
 ## Testing
 
-Unit and functionnal tests have been implemented with PHPUnit and require LiipTestFixturesBundle.
-To run all tests:
-`php bin/phpunit`
-
-To run specific tests:
+Lancer un test spécifique:
 `php bin/phpunit --filter TaskControllerTest`
 
-To generate up-to-date test-coverage:
+Générer une mise à jour des tests:
 `php bin/phpunit --coverage-html public/test-coverage`
-Test-coverage then accessible on /public/test-coverage/index.html
+le resultat est accessible sur /public/test-coverage/index.html
 
 
 ## Documentation
 
-* Authentication guide: /documentation
-* Quality and performance audit: /documentation
+* Guide d'authentification: /documentation
+* Qualité et Performance: /documentation
