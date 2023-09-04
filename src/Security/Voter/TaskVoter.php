@@ -24,6 +24,7 @@ class TaskVoter extends Voter
     /**
      * @param string $attribute
      * @param $subject
+     *
      * @return bool
      */
     protected function supports(string $attribute, $subject): bool
@@ -38,6 +39,7 @@ class TaskVoter extends Voter
      * @param string $attribute
      * @param $subject
      * @param TokenInterface $token
+     *
      * @return bool
      */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -50,16 +52,15 @@ class TaskVoter extends Voter
 
         /** @var Task $task */
         $task = $subject;
-        /** @var User $user */
+        /* @var User $user */
 
         // vérifier les conditions et renvoyer true pour accorder l'autorisation)
-        if ($attribute == 'TASK_DELETE') {
+        if ('TASK_DELETE' === $attribute) {
             return $this->canDelete($task, $user);
         }
 
         return false;
     }
-
 
     /**
      * @param Task $task

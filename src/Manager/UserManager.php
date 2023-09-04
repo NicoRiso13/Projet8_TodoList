@@ -3,11 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\User;
-
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-
 
 class UserManager
 {
@@ -16,7 +13,6 @@ class UserManager
 
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder)
     {
-
         $this->entityManager = $entityManager;
         $this->passwordEncoder = $passwordEncoder;
     }
@@ -35,5 +31,4 @@ class UserManager
         $user->setPassword($password);
         $this->entityManager->flush();
     }
-
 }

@@ -6,18 +6,17 @@ use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-
 class TaskManager
 {
     private EntityManagerInterface $entityManager;
     private TaskRepository $taskRepository;
 
-
-    public function __construct(TaskRepository $taskRepository,EntityManagerInterface $entityManager)
+    public function __construct(TaskRepository $taskRepository, EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->taskRepository = $taskRepository;
     }
+
     /**
      * Gérer la récupération de la liste des tâches à partir de la base de données.
      *
@@ -47,7 +46,6 @@ class TaskManager
 
     public function createTask(Task $task): void
     {
-
         $this->entityManager->persist($task);
         $this->entityManager->flush();
     }
@@ -61,9 +59,5 @@ class TaskManager
     {
         $this->entityManager->remove($task);
         $this->entityManager->flush();
-
     }
-
-
-
 }

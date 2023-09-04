@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,12 +63,10 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
     }
 
-
     public function getSalt()
     {
         return null;
     }
-
 
     public function getRoles(): array
     {
@@ -79,7 +76,7 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): User
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
