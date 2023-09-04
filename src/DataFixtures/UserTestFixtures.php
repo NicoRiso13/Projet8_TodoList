@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -21,7 +20,6 @@ class UserTestFixtures extends Fixture
     }
 
     /**
-     *
      * @param ObjectManager $manager
      *
      * @return void
@@ -30,11 +28,11 @@ class UserTestFixtures extends Fixture
     {
         for ($i = 1; $i <= 2; ++$i) {
             $user = new User();
-            $user->setEmail('user' . $i . '@email.com');
-            $user->setUsername('user' . $i);
+            $user->setEmail('user'.$i.'@email.com');
+            $user->setUsername('user'.$i);
             $user->setPassword($this->encoder->hashPassword($user, 'password'));
             $manager->persist($user);
-            $this->addReference('user' . $i, $user);
+            $this->addReference('user'.$i, $user);
         }
 
         $admin = new User();
@@ -44,7 +42,7 @@ class UserTestFixtures extends Fixture
         $admin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($admin);
-        $this->addReference('admin' . $i, $admin);
+        $this->addReference('admin'.$i, $admin);
 
         $manager->flush();
     }

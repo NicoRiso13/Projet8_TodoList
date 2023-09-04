@@ -11,12 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-
     /**
      * Créer un formulaire lié à la classe User.
      *
@@ -39,14 +36,14 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, ['label' => 'Adresse email'])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'Admin' => "ROLE_ADMIN",
-                    'User' => "ROLE_USER"
+                    'Admin' => 'ROLE_ADMIN',
+                    'User' => 'ROLE_USER',
                 ],
             ]);
         $builder->get('roles')
             ->addModelTransformer(new CallbackTransformer(
-                fn($rolesAsArray) => count($rolesAsArray) >0 ? $rolesAsArray[0] : null,
-                fn($rolesAsString) => [$rolesAsString]
+                fn ($rolesAsArray) => \count($rolesAsArray) > 0 ? $rolesAsArray[0] : null,
+                fn ($rolesAsString) => [$rolesAsString]
             ));
     }
 }

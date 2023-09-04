@@ -15,19 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-
 class TaskController extends AbstractController
 {
-
-
     private TaskManager $taskManager;
     private EntityManagerInterface $entityManager;
     private Security $security;
 
-
     public function __construct(TaskManager $taskManager, EntityManagerInterface $entityManager, Security $security)
     {
-
         $this->taskManager = $taskManager;
         $this->entityManager = $entityManager;
 
@@ -41,12 +36,10 @@ class TaskController extends AbstractController
      */
     public function listAction(TaskRepository $taskRepository): Response
     {
-        /** @var User $user */
+        /* @var User $user */
 
         return $this->render('task/list.html.twig', [
                 'tasks' => $taskRepository->findAll(),
-
-
             ]
         );
     }
@@ -62,7 +55,6 @@ class TaskController extends AbstractController
     {
         return $this->render('task/listDone.html.twig', [
                 'tasks' => $taskRepository->findAll(),
-
             ]
         );
     }
@@ -72,8 +64,9 @@ class TaskController extends AbstractController
      *
      * @Route("/tasks/create", name="task_create")
      *
-     * @param Request $request
+     * @param Request     $request
      * @param TaskManager $taskManager
+     *
      * @return Response
      */
     public function createAction(Request $request, TaskManager $taskManager): Response
@@ -82,10 +75,7 @@ class TaskController extends AbstractController
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $task->setAuthor($this->security->getUser());
             $taskManager->createTask($task);
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
@@ -101,8 +91,9 @@ class TaskController extends AbstractController
      *
      * @Route("/tasks/{id}/edit", name="task_edit")
      *
-     * @param Task $task
+     * @param Task    $task
      * @param Request $request
+     *
      * @return Response
      */
     public function editAction(Task $task, Request $request): Response
@@ -130,21 +121,24 @@ class TaskController extends AbstractController
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      *
      * @param Task $task
+     *
      * @return Response
      */
     public function toggleTaskAction(Task $task): Response
     {
         $task = $this->taskManager->handleToggleAction($task);
         $status = $task->isDone() ? 'faite' : 'non terminée';
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme ' . $status, $task->getTitle()));
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme '.$status, $task->getTitle()));
 
         return $this->redirectToRoute('task_list');
     }
 
     /**
      * Gérer la suppression de tâches limitée à l'auteur ou à l'administrateur de la tâche pour les tâches anonymes.
-     * @param Task $task
+     *
+     * @param Task        $task
      * @param TaskManager $taskManager
+     *
      * @return Response
      * @Route("/tasks/{id}/delete", name="task_delete")
      * @IsGranted("TASK_DELETE", subject="task", statusCode=401)
@@ -158,9 +152,8 @@ class TaskController extends AbstractController
         }
         $userId = $user->getId();
 
-        $taskUserId = $task->getAuthor() !== null ? $task->getAuthor()->getId() : null;
-        if ($taskUserId === $userId || ($taskUserId === null && $this->isGranted('ROLE_ADMIN'))) {
-
+        $taskUserId = null !== $task->getAuthor() ? $task->getAuthor()->getId() : null;
+        if ($taskUserId === $userId || (null === $taskUserId && $this->isGranted('ROLE_ADMIN'))) {
             $taskManager->deleteTask($task);
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');

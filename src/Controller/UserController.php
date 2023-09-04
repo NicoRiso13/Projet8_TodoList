@@ -29,6 +29,7 @@ class UserController extends AbstractController
      * @Route("/users", name="user_list")
      *
      * @param UserRepository $userRepository
+     *
      * @return Response
      */
     public function listAction(UserRepository $userRepository): Response
@@ -42,6 +43,7 @@ class UserController extends AbstractController
      * @Route("/users/create", name="user_create")
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function createAction(Request $request): Response
@@ -76,8 +78,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $userManager->updateUser($user);
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");

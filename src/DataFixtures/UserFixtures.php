@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
@@ -21,7 +20,6 @@ class UserFixtures extends Fixture
     }
 
     /**
-     *
      * @param ObjectManager $manager
      *
      * @return void
@@ -29,10 +27,9 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 10; ++$i) {
-
             $user = new User();
-            $user->setEmail('user' . $i . '@email.com');
-            $user->setUsername('user'. $i);
+            $user->setEmail('user'.$i.'@email.com');
+            $user->setUsername('user'.$i);
             $user->setPassword($this->encoder->hashPassword($user, 'password'));
 
             $manager->persist($user);
@@ -40,9 +37,9 @@ class UserFixtures extends Fixture
 
         $admin = new User();
         $admin->setEmail('admin1@email.com');
-            $admin->setUsername('admin1');
-            $admin->setPassword($this->encoder->hashPassword($user, 'password'));
-            $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setUsername('admin1');
+        $admin->setPassword($this->encoder->hashPassword($user, 'password'));
+        $admin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($admin);
 

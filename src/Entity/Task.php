@@ -59,17 +59,15 @@ class Task
         return $this->id;
     }
 
-
     public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
     }
 
-
     /**
      * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -77,7 +75,7 @@ class Task
     /**
      * @param \DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -92,6 +90,7 @@ class Task
 
     /**
      * @param string $title
+     *
      * @return string
      */
     public function setTitle(string $title): string
@@ -109,6 +108,7 @@ class Task
 
     /**
      * @param string $content
+     *
      * @return string
      */
     public function setContent(string $content): string
@@ -132,8 +132,7 @@ class Task
         $this->isDone = $isDone;
     }
 
-
-    public function getAuthor(): User
+    public function getAuthor()
     {
         return $this->author;
     }
@@ -145,6 +144,4 @@ class Task
     {
         $this->author = $author;
     }
-
-
 }

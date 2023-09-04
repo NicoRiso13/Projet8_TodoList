@@ -21,7 +21,7 @@ class TaskFixtures extends Fixture
 
         for ($i = 1; $i <= 10; ++$i) {
             $task = new Task();
-            $task->setTitle('tache ' . $i);
+            $task->setTitle('tache '.$i);
             $task->setContent($faker->text(mt_rand(50, 150)));
             if ($i > 5) {
                 $task->setIsDone(true);

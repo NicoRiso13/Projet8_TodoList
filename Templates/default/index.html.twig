@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block header_title %}
-    <h6>L'utilisateur est connecté avec le compte:{{ app.user.email }}</h6>
+    <h6>L'utilisateur est connecté avec le compte: <span id="user" style="font-weight: bold">{{ app.user.email }}</span></h6>
     <h1>Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !</h1>
 {% endblock %}
 

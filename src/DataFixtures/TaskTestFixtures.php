@@ -4,8 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Task;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class TaskTestFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -22,13 +22,13 @@ class TaskTestFixtures extends Fixture implements DependentFixtureInterface
             $task = new Task();
             $task->setTitle('title'.$i);
             $task->setContent('content'.$i);
-            if ($i == 3) {
+            if (3 === $i) {
                 $task->setIsDone(true);
             }
-            if ($i == 4) {
+            if (4 === $i) {
                 $task->setAuthor($this->getReference('user1'));
             }
-            if ($i == 5) {
+            if (5 === $i) {
                 $task->setAuthor($this->getReference('user2'));
             }
             $manager->persist($task);
